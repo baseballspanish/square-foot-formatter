@@ -1,5 +1,5 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
 
 // Attempt to register the Montserrat font, but use a fallback if it fails
 try {
@@ -14,77 +14,120 @@ try {
   console.warn('Failed to load Montserrat font:', error);
 }
 
-// Register other fonts
-Font.register({
-  family: 'Helvetica',
-  fonts: [
-    { src: 'https://fonts.gstatic.com/s/helveticaneue/v70/1Ptsg8zYS_SKggPNyCg4QIFqPfE.ttf', fontWeight: 'normal' },
-    { src: 'https://fonts.gstatic.com/s/helveticaneue/v70/1Ptsg8zYS_SKggPNyCg4TYFqPfE.ttf', fontWeight: 'bold' },
-  ],
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: 'column',
+    backgroundColor: '#FFFFFF',
+    padding: 40,
+    fontFamily: 'Montserrat',
+  },
+  header: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  subHeader: {
+    fontSize: 12,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  billingInfo: {
+    marginBottom: 20,
+  },
+  billingText: {
+    fontSize: 10,
+    marginBottom: 5,
+  },
+  table: {
+    display: 'table',
+    width: 'auto',
+    borderStyle: 'solid',
+    borderColor: '#bfbfbf',
+    borderWidth: 1,
+    borderRightWidth: 0,
+    borderBottomWidth: 0,
+  },
+  tableRow: {
+    margin: 'auto',
+    flexDirection: 'row',
+  },
+  tableColHeader: {
+    width: '25%',
+    borderStyle: 'solid',
+    borderColor: '#bfbfbf',
+    borderBottomColor: '#000',
+    borderWidth: 1,
+    borderLeftWidth: 0,
+    borderTopWidth: 0,
+  },
+  tableCol: {
+    width: '25%',
+    borderStyle: 'solid',
+    borderColor: '#bfbfbf',
+    borderWidth: 1,
+    borderLeftWidth: 0,
+    borderTopWidth: 0,
+  },
+  tableCellHeader: {
+    margin: 5,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  tableCell: {
+    margin: 5,
+    fontSize: 10,
+  },
 });
 
-const InvoicePDF = ({ squareFeet, pricePerSqFt, totalCost, payments, percentages, uploadedImage, selectedFont }) => {
-  const styles = StyleSheet.create({
-    page: {
-      flexDirection: 'column',
-      backgroundColor: '#FFFFFF',
-      padding: 30,
-      position: 'relative',
-      fontFamily: selectedFont,
-    },
-    section: {
-      margin: 10,
-      padding: 10,
-      flexGrow: 1,
-    },
-    title: {
-      fontSize: 24,
-      marginBottom: 10,
-      fontWeight: 'bold',
-    },
-    text: {
-      fontSize: 12,
-      marginBottom: 5,
-    },
-    imageContainer: {
-      position: 'absolute',
-      top: 30,
-      right: 30,
-      width: 100,
-      height: 100,
-    },
-    image: {
-      objectFit: 'contain',
-      width: '100%',
-      height: '100%',
-    },
-  });
+const InvoicePDF = ({ clientName, companyName, email, services }) => (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <Text style={styles.header}>MERAV INTERIORS</Text>
+      <Text style={styles.subHeader}>BY KATIE ROBERTS</Text>
+      
+      <View style={styles.billingInfo}>
+        <Text style={styles.billingText}>BILLED TO: {clientName}</Text>
+        <Text style={styles.billingText}>PAY TO: {companyName}</Text>
+        <Text style={styles.billingText}>{email}</Text>
+      </View>
 
-  return (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        {uploadedImage && (
-          <View style={styles.imageContainer}>
-            <Image src={uploadedImage} style={styles.image} />
+      <Text style={[styles.billingText, { fontWeight: 'bold', marginBottom: 10 }]}>DESIGN FEES:</Text>
+
+      <View style={styles.table}>
+        <View style={styles.tableRow}>
+          <View style={styles.tableColHeader}>
+            <Text style={styles.tableCellHeader}>LOCATION</Text>
           </View>
-        )}
-        <View style={styles.section}>
-          <Text style={styles.title}>Invoice Details</Text>
-          <Text style={styles.text}>Square Feet: {squareFeet}</Text>
-          <Text style={styles.text}>Price per Sq Ft: ${pricePerSqFt}</Text>
-          <Text style={styles.text}>Total Cost: ${totalCost.toFixed(2)}</Text>
+          <View style={styles.tableColHeader}>
+            <Text style={styles.tableCellHeader}>DESCRIPTION</Text>
+          </View>
+          <View style={styles.tableColHeader}>
+            <Text style={styles.tableCellHeader}>SERVICE CATEGORY</Text>
+          </View>
+          <View style={styles.tableColHeader}>
+            <Text style={styles.tableCellHeader}>SUBTOTAL</Text>
+          </View>
         </View>
-        <View style={styles.section}>
-          <Text style={styles.title}>Payment Schedule</Text>
-          {payments.map((payment, index) => (
-            <Text key={index} style={styles.text}>
-              Payment {index + 1} ({percentages[index]}%): ${payment.toFixed(2)}
-            </Text>
-          ))}
-        </View>
-      </Page>
-    </Document>
-  );
-};
+        {services.map((service, index) => (
+          <View style={styles.tableRow} key={index}>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{service.location}</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{service.description}</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>{service.category}</Text>
+            </View>
+            <View style={styles.tableCol}>
+              <Text style={styles.tableCell}>${service.subtotal.toFixed(2)}</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </Page>
+  </Document>
+);
 
 export default InvoicePDF;
