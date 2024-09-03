@@ -1,5 +1,5 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Font, Image, Link } from '@react-pdf/renderer';
 
 // Register Times New Roman font
 Font.register({
@@ -95,9 +95,13 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: '#666',
   },
+  paymentLink: {
+    color: 'blue',
+    textDecoration: 'underline',
+  },
 });
 
-const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, invoiceTitle }) => (
+const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, invoiceTitle, paymentLink }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
@@ -134,6 +138,15 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, 
         <Text style={styles.totalLabel}>Total:</Text>
         <Text style={styles.totalAmount}>${total.toFixed(2)}</Text>
       </View>
+
+      {paymentLink && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Payment Link:</Text>
+          <Link src={paymentLink} style={styles.paymentLink}>
+            Click here to pay
+          </Link>
+        </View>
+      )}
 
       <Text style={styles.footer}>Thank you for your business!</Text>
     </Page>

@@ -21,7 +21,8 @@ const Index = () => {
   const [clientName, setClientName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
-  const [invoiceTitle, setInvoiceTitle] = useState('INVOICE'); // New state for invoice title
+  const [invoiceTitle, setInvoiceTitle] = useState('INVOICE');
+  const [paymentLink, setPaymentLink] = useState(''); // New state for payment link
   const [services, setServices] = useState([
     { description: '', category: '', subtotal: 0 }
   ]);
@@ -221,6 +222,11 @@ const Index = () => {
               onChange={(e) => setInvoiceTitle(e.target.value)}
             />
             <Input
+              placeholder="Payment Link"
+              value={paymentLink}
+              onChange={(e) => setPaymentLink(e.target.value)}
+            />
+            <Input
               type="file"
               accept="image/*"
               onChange={(e) => handleLogoUpload(e, setInvoiceLogoUrl)}
@@ -266,6 +272,7 @@ const Index = () => {
                 total={total}
                 logoUrl={invoiceLogoUrl}
                 invoiceTitle={invoiceTitle}
+                paymentLink={paymentLink}
               />
             }
           >
