@@ -22,7 +22,7 @@ const Index = () => {
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
   const [services, setServices] = useState([
-    { location: '', description: '', category: '', subtotal: 0 }
+    { description: '', category: '', subtotal: 0 }
   ]);
   const [error, setError] = useState('');
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
@@ -81,7 +81,7 @@ const Index = () => {
   };
 
   const addService = () => {
-    setServices([...services, { location: '', description: '', category: '', subtotal: 0 }]);
+    setServices([...services, { description: '', category: '', subtotal: 0 }]);
   };
 
   const removeService = (index) => {
@@ -222,11 +222,6 @@ const Index = () => {
           </div>
           {services.map((service, index) => (
             <div key={index} className="grid grid-cols-1 gap-2 mb-4">
-              <Input
-                placeholder="Location"
-                value={service.location}
-                onChange={(e) => handleServiceChange(index, 'location', e.target.value)}
-              />
               <Input
                 placeholder="Description"
                 value={service.description}
