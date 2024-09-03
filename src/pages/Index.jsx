@@ -14,9 +14,10 @@ const Index = () => {
   const [error, setError] = useState('');
   const [totalCost, setTotalCost] = useState(0);
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [calculationDone, setCalculationDone] = useState(false);
 
   const calculatePayments = () => {
-    const total = squareFeet * pricePerSqFt;
+    const total = parseFloat(squareFeet) * parseFloat(pricePerSqFt);
     setTotalCost(total);
     let remainingCost = total;
     const newPayments = percentages.map((percentage, index) => {
@@ -32,6 +33,7 @@ const Index = () => {
     // Adjust last payment to account for rounding errors
     newPayments[newPayments.length - 1] += parseFloat(remainingCost.toFixed(2));
     setPayments(newPayments);
+    setCalculationDone(true);
   };
 
   const validateTotalPercentage = (newPercentages) => {
@@ -106,7 +108,7 @@ const Index = () => {
             </Alert>
           )}
           <Button onClick={calculatePayments} className="w-full mb-4" disabled={!!error}>Calculate Payments</Button>
-          {payments.length > 0 && (
+          {calculationDone && (
             <PDFDownloadLink
               document={<InvoicePDF squareFeet={squareFeet} pricePerSqFt={pricePerSqFt} totalCost={totalCost} payments={payments} percentages={percentages} uploadedImage={uploadedImage} />}
               fileName="invoice.pdf"
@@ -121,7 +123,7 @@ const Index = () => {
         </CardContent>
       </Card>
 
-      {payments.length > 0 && (
+      {calculationDone && (
         <Card>
           <CardHeader>
             <CardTitle>Payment Schedule</CardTitle>
