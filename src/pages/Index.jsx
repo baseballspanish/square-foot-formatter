@@ -13,6 +13,7 @@ const Index = () => {
   const [payments, setPayments] = useState([]);
   const [error, setError] = useState('');
   const [totalCost, setTotalCost] = useState(0);
+  const [uploadedImage, setUploadedImage] = useState(null);
 
   const calculatePayments = () => {
     const total = squareFeet * pricePerSqFt;
@@ -50,6 +51,17 @@ const Index = () => {
     }
   };
 
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <Card className="mb-6">
@@ -82,6 +94,12 @@ const Index = () => {
               />
             ))}
           </div>
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="mb-4"
+          />
           {error && (
             <Alert variant="destructive" className="mb-4">
               <AlertDescription>{error}</AlertDescription>
@@ -90,7 +108,7 @@ const Index = () => {
           <Button onClick={calculatePayments} className="w-full mb-4" disabled={!!error}>Calculate Payments</Button>
           {payments.length > 0 && (
             <PDFDownloadLink
-              document={<InvoicePDF squareFeet={squareFeet} pricePerSqFt={pricePerSqFt} totalCost={totalCost} payments={payments} percentages={percentages} />}
+              document={<InvoicePDF squareFeet={squareFeet} pricePerSqFt={pricePerSqFt} totalCost={totalCost} payments={payments} percentages={percentages} uploadedImage={uploadedImage} />}
               fileName="invoice.pdf"
             >
               {({ blob, url, loading, error }) => 
