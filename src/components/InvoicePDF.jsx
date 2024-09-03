@@ -1,7 +1,7 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
-import MontserratRegular from '../assets/fonts/Montserrat-Regular.ttf';
-import MontserratBold from '../assets/fonts/Montserrat-Bold.ttf';
+import MontserratRegular from '../assets/Montserrat-Regular.ttf';
+import MontserratBold from '../assets/Montserrat-Bold.ttf';
 
 // Register the Montserrat font
 Font.register({
