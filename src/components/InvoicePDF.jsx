@@ -18,78 +18,64 @@ const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
-    padding: 30,
+    padding: 40,
     fontFamily: 'Montserrat',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  headerText: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  subHeader: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 5,
+    alignItems: 'flex-start',
+    marginBottom: 40,
   },
   logo: {
     width: 100,
-    height: 100,
+    height: 'auto',
   },
-  billingInfo: {
+  headerText: {
+    fontSize: 10,
+    color: '#333333',
+    textAlign: 'right',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
     marginBottom: 20,
-  },
-  billingText: {
-    fontSize: 12,
-    marginBottom: 5,
   },
   table: {
     display: 'table',
     width: 'auto',
-    borderStyle: 'solid',
-    borderColor: '#bfbfbf',
-    borderWidth: 1,
-    borderRightWidth: 0,
-    borderBottomWidth: 0,
     marginTop: 20,
+    borderStyle: 'solid',
+    borderColor: '#EEEEEE',
+    borderWidth: 1,
   },
   tableRow: {
-    margin: 'auto',
     flexDirection: 'row',
   },
   tableColHeader: {
     width: '25%',
     borderStyle: 'solid',
-    borderColor: '#bfbfbf',
-    borderBottomColor: '#000',
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
-    backgroundColor: '#f0f0f0',
+    borderColor: '#EEEEEE',
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
+    padding: 5,
   },
   tableCol: {
     width: '25%',
     borderStyle: 'solid',
-    borderColor: '#bfbfbf',
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
+    borderColor: '#EEEEEE',
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
+    padding: 5,
   },
   tableCellHeader: {
-    margin: 5,
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: 'bold',
+    color: '#333333',
   },
   tableCell: {
-    margin: 5,
     fontSize: 10,
+    color: '#333333',
   },
   total: {
     marginTop: 20,
@@ -103,21 +89,16 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl }
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
-        <View style={styles.headerText}>
-          <Text style={styles.headerTitle}>INVOICE</Text>
-          <Text style={styles.subHeader}>MERAV INTERIORS</Text>
-          <Text style={styles.subHeader}>BY KATIE ROBERTS</Text>
-        </View>
         {logoUrl && <Image style={styles.logo} src={logoUrl} />}
+        <View>
+          <Text style={styles.headerText}>{companyName}</Text>
+          <Text style={styles.headerText}>{email}</Text>
+        </View>
       </View>
       
-      <View style={styles.billingInfo}>
-        <Text style={styles.billingText}>BILLED TO: {clientName}</Text>
-        <Text style={styles.billingText}>PAY TO: {companyName}</Text>
-        <Text style={styles.billingText}>{email}</Text>
-      </View>
-
-      <Text style={[styles.billingText, { fontWeight: 'bold', marginBottom: 10, fontSize: 14 }]}>DESIGN FEES:</Text>
+      <Text style={styles.title}>INVOICE</Text>
+      
+      <Text style={styles.tableCell}>BILLED TO: {clientName}</Text>
 
       <View style={styles.table}>
         <View style={styles.tableRow}>
