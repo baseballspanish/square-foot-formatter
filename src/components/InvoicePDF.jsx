@@ -18,26 +18,26 @@ const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
-    padding: 40,
+    padding: 30,
     fontFamily: 'Montserrat',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
   },
   headerText: {
     flex: 1,
   },
   headerTitle: {
     fontSize: 24,
-    textAlign: 'center',
+    fontWeight: 'bold',
   },
   subHeader: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#666',
-    textAlign: 'center',
+    marginTop: 5,
   },
   logo: {
     width: 100,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   billingText: {
-    fontSize: 10,
+    fontSize: 12,
     marginBottom: 5,
   },
   table: {
@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRightWidth: 0,
     borderBottomWidth: 0,
+    marginTop: 20,
   },
   tableRow: {
     margin: 'auto',
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderLeftWidth: 0,
     borderTopWidth: 0,
+    backgroundColor: '#f0f0f0',
   },
   tableCol: {
     width: '25%',
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
   },
   tableCellHeader: {
     margin: 5,
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 'bold',
   },
   tableCell: {
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
   },
   total: {
     marginTop: 20,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'right',
   },
@@ -102,7 +104,8 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl }
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
         <View style={styles.headerText}>
-          <Text style={styles.headerTitle}>MERAV INTERIORS</Text>
+          <Text style={styles.headerTitle}>INVOICE</Text>
+          <Text style={styles.subHeader}>MERAV INTERIORS</Text>
           <Text style={styles.subHeader}>BY KATIE ROBERTS</Text>
         </View>
         {logoUrl && <Image style={styles.logo} src={logoUrl} />}
@@ -114,7 +117,7 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl }
         <Text style={styles.billingText}>{email}</Text>
       </View>
 
-      <Text style={[styles.billingText, { fontWeight: 'bold', marginBottom: 10 }]}>DESIGN FEES:</Text>
+      <Text style={[styles.billingText, { fontWeight: 'bold', marginBottom: 10, fontSize: 14 }]}>DESIGN FEES:</Text>
 
       <View style={styles.table}>
         <View style={styles.tableRow}>
