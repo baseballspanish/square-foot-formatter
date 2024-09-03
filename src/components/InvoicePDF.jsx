@@ -28,7 +28,7 @@ const InvoicePDF = ({ squareFeet, pricePerSqFt, totalCost, payments, percentages
       backgroundColor: '#E4E4E4',
       padding: 30,
       position: 'relative',
-      fontFamily: selectedFont || 'Montserrat',
+      fontFamily: selectedFont === 'Montserrat' ? 'Montserrat' : selectedFont,
     },
     section: {
       margin: 10,
