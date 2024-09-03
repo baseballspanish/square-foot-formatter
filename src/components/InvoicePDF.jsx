@@ -21,28 +21,16 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   topLeftLogo: {
-    width: 100,
+    width: 150,
     height: 'auto',
-    marginBottom: 10,
+    marginBottom: 20,
     alignSelf: 'flex-start',
   },
   centerLogo: {
-    width: 100,
+    width: 200,
     height: 'auto',
-    marginBottom: 10,
+    marginBottom: 20,
     alignSelf: 'center',
-  },
-  companyName: {
-    fontSize: 24,
-    marginTop: 10,
-    marginBottom: 5,
-  },
-  byline: {
-    fontSize: 12,
-    fontFamily: 'Helvetica',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-    marginBottom: 30,
   },
   section: {
     marginBottom: 20,
@@ -84,14 +72,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, logoUrl2, invoiceTitle, paymentLink }) => (
+const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, logoUrl2, paymentLink }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
         {logoUrl && <Image style={styles.topLeftLogo} src={logoUrl} />}
         {logoUrl2 && <Image style={styles.centerLogo} src={logoUrl2} />}
-        <Text style={styles.companyName}>{companyName || 'MERAV INTERIORS'}</Text>
-        <Text style={styles.byline}>BY KATIE ROBERTS</Text>
       </View>
 
       <View style={styles.section}>
