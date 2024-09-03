@@ -16,12 +16,21 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
   header: {
-    textAlign: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
     marginBottom: 30,
   },
-  logoText: {
-    fontSize: 36,
-    fontFamily: 'Helvetica-Bold',
+  topLeftLogo: {
+    width: 100,
+    height: 'auto',
+    marginBottom: 10,
+    alignSelf: 'flex-start',
+  },
+  centerLogo: {
+    width: 100,
+    height: 'auto',
+    marginBottom: 10,
+    alignSelf: 'center',
   },
   companyName: {
     fontSize: 24,
@@ -68,11 +77,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: 'right',
   },
-  logo: {
-    width: 100,
-    height: 'auto',
-    marginBottom: 10,
-  },
   paymentLink: {
     color: 'blue',
     textDecoration: 'underline',
@@ -80,12 +84,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, invoiceTitle, paymentLink }) => (
+const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, logoUrl2, invoiceTitle, paymentLink }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
-        {logoUrl && <Image style={styles.logo} src={logoUrl} />}
-        <Text style={styles.logoText}>{invoiceTitle || 'INVOICE'}</Text>
+        {logoUrl && <Image style={styles.topLeftLogo} src={logoUrl} />}
+        {logoUrl2 && <Image style={styles.centerLogo} src={logoUrl2} />}
         <Text style={styles.companyName}>{companyName || 'MERAV INTERIORS'}</Text>
         <Text style={styles.byline}>BY KATIE ROBERTS</Text>
       </View>
