@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const Index = () => {
   const [squareFeet, setSquareFeet] = useState('');
   const [pricePerSqFt, setPricePerSqFt] = useState('');
   const [percentages, setPercentages] = useState([50, 30, 10, 10]);
   const [payments, setPayments] = useState([]);
+  const [error, setError] = useState('');
 
   const calculatePayments = () => {
     const totalCost = squareFeet * pricePerSqFt;
@@ -27,10 +29,21 @@ const Index = () => {
     setPayments(newPayments);
   };
 
+  const validateTotalPercentage = (newPercentages) => {
+    const total = newPercentages.reduce((sum, percentage) => sum + percentage, 0);
+    return total <= 100;
+  };
+
   const handlePercentageChange = (index, value) => {
     const newPercentages = [...percentages];
     newPercentages[index] = parseFloat(value) || 0;
-    setPercentages(newPercentages);
+    
+    if (validateTotalPercentage(newPercentages)) {
+      setPercentages(newPercentages);
+      setError('');
+    } else {
+      setError('Total percentage cannot exceed 100%');
+    }
   };
 
   return (
@@ -65,7 +78,12 @@ const Index = () => {
               />
             ))}
           </div>
-          <Button onClick={calculatePayments} className="w-full">Calculate Payments</Button>
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+          <Button onClick={calculatePayments} className="w-full" disabled={!!error}>Calculate Payments</Button>
         </CardContent>
       </Card>
 
