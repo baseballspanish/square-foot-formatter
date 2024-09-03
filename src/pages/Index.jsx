@@ -7,6 +7,14 @@ import { BlobProvider } from '@react-pdf/renderer';
 import InvoicePDF from '../components/InvoicePDF';
 
 const Index = () => {
+  // Calculator state
+  const [squareFootage, setSquareFootage] = useState('');
+  const [pricePerSquareFoot, setPricePerSquareFoot] = useState('');
+  const [numberOfPayments, setNumberOfPayments] = useState('');
+  const [calculatedTotal, setCalculatedTotal] = useState(0);
+  const [pricePerPayment, setPricePerPayment] = useState(0);
+
+  // Invoice generator state
   const [clientName, setClientName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
@@ -17,27 +25,20 @@ const Index = () => {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [total, setTotal] = useState(0);
 
-  // New state variables for square footage calculator
-  const [squareFootage, setSquareFootage] = useState('');
-  const [pricePerSquareFoot, setPricePerSquareFoot] = useState('');
-  const [numberOfPayments, setNumberOfPayments] = useState('');
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [pricePerPayment, setPricePerPayment] = useState(0);
+  // Calculator effect
+  useEffect(() => {
+    const total = parseFloat(squareFootage) * parseFloat(pricePerSquareFoot);
+    setCalculatedTotal(isNaN(total) ? 0 : total);
+    
+    const perPayment = total / parseFloat(numberOfPayments);
+    setPricePerPayment(isNaN(perPayment) ? 0 : perPayment);
+  }, [squareFootage, pricePerSquareFoot, numberOfPayments]);
 
+  // Invoice total effect
   useEffect(() => {
     const newTotal = services.reduce((sum, service) => sum + parseFloat(service.subtotal || 0), 0);
     setTotal(newTotal);
   }, [services]);
-
-  useEffect(() => {
-    const calculatedTotal = squareFootage * pricePerSquareFoot;
-    setTotalPrice(calculatedTotal);
-    if (numberOfPayments > 0) {
-      setPricePerPayment(calculatedTotal / numberOfPayments);
-    } else {
-      setPricePerPayment(0);
-    }
-  }, [squareFootage, pricePerSquareFoot, numberOfPayments]);
 
   const handleServiceChange = (index, field, value) => {
     const updatedServices = [...services];
@@ -82,28 +83,28 @@ const Index = () => {
           <CardTitle>Square Footage Calculator</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <Input
               type="number"
               placeholder="Square Footage"
               value={squareFootage}
-              onChange={(e) => setSquareFootage(parseFloat(e.target.value) || 0)}
+              onChange={(e) => setSquareFootage(e.target.value)}
             />
             <Input
               type="number"
               placeholder="Price per Square Foot"
               value={pricePerSquareFoot}
-              onChange={(e) => setPricePerSquareFoot(parseFloat(e.target.value) || 0)}
+              onChange={(e) => setPricePerSquareFoot(e.target.value)}
             />
             <Input
               type="number"
               placeholder="Number of Payments"
               value={numberOfPayments}
-              onChange={(e) => setNumberOfPayments(parseInt(e.target.value) || 0)}
+              onChange={(e) => setNumberOfPayments(e.target.value)}
             />
           </div>
-          <div className="text-right mb-4">
-            <p><strong>Total Price: ${totalPrice.toFixed(2)}</strong></p>
+          <div className="text-right">
+            <p><strong>Total: ${calculatedTotal.toFixed(2)}</strong></p>
             <p><strong>Price per Payment: ${pricePerPayment.toFixed(2)}</strong></p>
           </div>
         </CardContent>
