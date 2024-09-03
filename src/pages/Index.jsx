@@ -16,7 +16,7 @@ const Index = () => {
   const [totalCost, setTotalCost] = useState(0);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [calculationDone, setCalculationDone] = useState(false);
-  const [selectedFont, setSelectedFont] = useState('Helvetica');
+  const [selectedFont, setSelectedFont] = useState('Montserrat');
 
   const calculatePayments = () => {
     const total = parseFloat(squareFeet) * parseFloat(pricePerSqFt);
@@ -109,6 +109,7 @@ const Index = () => {
               <SelectValue placeholder="Select font" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="Montserrat">Montserrat</SelectItem>
               <SelectItem value="Helvetica">Helvetica</SelectItem>
               <SelectItem value="Times-Roman">Times New Roman</SelectItem>
               <SelectItem value="Courier">Courier</SelectItem>

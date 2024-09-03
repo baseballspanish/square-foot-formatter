@@ -1,7 +1,18 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
+import MontserratRegular from '../assets/Montserrat-Regular.ttf';
+import MontserratBold from '../assets/Montserrat-Bold.ttf';
 
-// Register the Helvetica font
+// Register the Montserrat font
+Font.register({
+  family: 'Montserrat',
+  fonts: [
+    { src: MontserratRegular, fontWeight: 'normal' },
+    { src: MontserratBold, fontWeight: 'bold' },
+  ],
+});
+
+// Register other fonts
 Font.register({
   family: 'Helvetica',
   fonts: [
@@ -17,7 +28,7 @@ const InvoicePDF = ({ squareFeet, pricePerSqFt, totalCost, payments, percentages
       backgroundColor: '#E4E4E4',
       padding: 30,
       position: 'relative',
-      fontFamily: selectedFont || 'Helvetica',
+      fontFamily: selectedFont || 'Montserrat',
     },
     section: {
       margin: 10,
