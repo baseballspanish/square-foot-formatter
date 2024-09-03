@@ -1,11 +1,28 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
     padding: 30,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  headerText: {
+    flex: 1,
+  },
+  headerTitle: {
+    fontSize: 24,
+    marginBottom: 10,
+  },
+  logo: {
+    width: 100,
+    height: 100,
   },
   section: {
     margin: 10,
@@ -22,11 +39,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const PricingCalculatorPDF = ({ squareFeet, pricePerSqFt, totalCost, payments, percentages }) => (
+const PricingCalculatorPDF = ({ squareFeet, pricePerSqFt, totalCost, payments, percentages, logoUrl }) => (
   <Document>
     <Page size="A4" style={styles.page}>
+      <View style={styles.header}>
+        <View style={styles.headerText}>
+          <Text style={styles.headerTitle}>Pricing Calculator Summary</Text>
+        </View>
+        {logoUrl && <Image style={styles.logo} src={logoUrl} />}
+      </View>
       <View style={styles.section}>
-        <Text style={styles.title}>Pricing Calculator Summary</Text>
         <Text style={styles.text}>Square Feet: {squareFeet}</Text>
         <Text style={styles.text}>Price per Square Foot: ${pricePerSqFt}</Text>
         <Text style={styles.text}>Total Cost: ${totalCost.toFixed(2)}</Text>

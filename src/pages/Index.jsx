@@ -15,6 +15,7 @@ const Index = () => {
   const [totalCost, setTotalCost] = useState(0);
   const [payments, setPayments] = useState([0, 0, 0, 0]);
   const [calculatorError, setCalculatorError] = useState('');
+  const [calculatorLogoUrl, setCalculatorLogoUrl] = useState('');
 
   // Invoice generator state
   const [clientName, setClientName] = useState('');
@@ -26,7 +27,7 @@ const Index = () => {
   const [error, setError] = useState('');
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [total, setTotal] = useState(0);
-  const [logoUrl, setLogoUrl] = useState('');
+  const [invoiceLogoUrl, setInvoiceLogoUrl] = useState('');
 
   // Calculator effect
   useEffect(() => {
@@ -106,7 +107,7 @@ const Index = () => {
     }
   };
 
-  const handleLogoUpload = (event) => {
+  const handleLogoUpload = (event, setLogoUrl) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -149,6 +150,12 @@ const Index = () => {
               />
             ))}
           </div>
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleLogoUpload(e, setCalculatorLogoUrl)}
+            className="mb-4"
+          />
           {calculatorError && (
             <Alert variant="destructive" className="mb-4">
               <AlertDescription>{calculatorError}</AlertDescription>
@@ -168,6 +175,7 @@ const Index = () => {
                 totalCost={totalCost}
                 payments={payments}
                 percentages={percentages}
+                logoUrl={calculatorLogoUrl}
               />
             }
           >
@@ -209,7 +217,7 @@ const Index = () => {
             <Input
               type="file"
               accept="image/*"
-              onChange={handleLogoUpload}
+              onChange={(e) => handleLogoUpload(e, setInvoiceLogoUrl)}
             />
           </div>
           {services.map((service, index) => (
@@ -255,7 +263,7 @@ const Index = () => {
                 email={email}
                 services={services}
                 total={total}
-                logoUrl={logoUrl}
+                logoUrl={invoiceLogoUrl}
               />
             }
           >
