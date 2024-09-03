@@ -5,9 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { BlobProvider } from '@react-pdf/renderer';
 import InvoicePDF from '../components/InvoicePDF';
+import PricingCalculatorPDF from '../components/PricingCalculatorPDF';
 
 const Index = () => {
-  // New calculator state
+  // Pricing calculator state
   const [squareFeet, setSquareFeet] = useState('');
   const [pricePerSqFt, setPricePerSqFt] = useState('');
   const [percentages, setPercentages] = useState([50, 30, 10, 10]);
@@ -15,7 +16,7 @@ const Index = () => {
   const [payments, setPayments] = useState([0, 0, 0, 0]);
   const [calculatorError, setCalculatorError] = useState('');
 
-  // Existing invoice generator state
+  // Invoice generator state
   const [clientName, setClientName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
@@ -60,7 +61,7 @@ const Index = () => {
     }
   };
 
-  // Existing invoice total effect
+  // Invoice total effect
   useEffect(() => {
     const newTotal = services.reduce((sum, service) => sum + parseFloat(service.subtotal || 0), 0);
     setTotal(newTotal);
@@ -84,13 +85,13 @@ const Index = () => {
     setServices(updatedServices);
   };
 
-  const handleDownloadPDF = async (blob) => {
+  const handleDownloadPDF = async (blob, filename) => {
     setIsGeneratingPDF(true);
     try {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'invoice.pdf';
+      link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -106,7 +107,7 @@ const Index = () => {
     <div className="container mx-auto p-4">
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Invoice Pricing Calculator</CardTitle>
+          <CardTitle>Pricing Calculator</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -139,12 +140,33 @@ const Index = () => {
               <AlertDescription>{calculatorError}</AlertDescription>
             </Alert>
           )}
-          <div className="text-right">
+          <div className="text-right mb-4">
             <p><strong>Total Cost: ${totalCost.toFixed(2)}</strong></p>
             {payments.map((payment, index) => (
               <p key={index}><strong>Payment {index + 1}: ${payment.toFixed(2)}</strong></p>
             ))}
           </div>
+          <BlobProvider
+            document={
+              <PricingCalculatorPDF
+                squareFeet={squareFeet}
+                pricePerSqFt={pricePerSqFt}
+                totalCost={totalCost}
+                payments={payments}
+                percentages={percentages}
+              />
+            }
+          >
+            {({ blob, url, loading, error }) => (
+              <Button
+                className="w-full"
+                onClick={() => handleDownloadPDF(blob, 'pricing-calculator.pdf')}
+                disabled={loading || isGeneratingPDF}
+              >
+                {loading || isGeneratingPDF ? 'Generating PDF...' : 'Download Pricing Calculator PDF'}
+              </Button>
+            )}
+          </BlobProvider>
         </CardContent>
       </Card>
 
@@ -220,10 +242,10 @@ const Index = () => {
             {({ blob, url, loading, error }) => (
               <Button
                 className="w-full"
-                onClick={() => handleDownloadPDF(blob)}
+                onClick={() => handleDownloadPDF(blob, 'invoice.pdf')}
                 disabled={loading || isGeneratingPDF}
               >
-                {loading || isGeneratingPDF ? 'Generating PDF...' : 'Download PDF'}
+                {loading || isGeneratingPDF ? 'Generating PDF...' : 'Download Invoice PDF'}
               </Button>
             )}
           </BlobProvider>
