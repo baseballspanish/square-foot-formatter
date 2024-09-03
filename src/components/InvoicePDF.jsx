@@ -1,5 +1,16 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
+import MontserratRegular from '../assets/fonts/Montserrat-Regular.ttf';
+import MontserratBold from '../assets/fonts/Montserrat-Bold.ttf';
+
+// Register the Montserrat font
+Font.register({
+  family: 'Montserrat',
+  fonts: [
+    { src: MontserratRegular, fontWeight: 'normal' },
+    { src: MontserratBold, fontWeight: 'bold' },
+  ],
+});
 
 const styles = StyleSheet.create({
   page: {
@@ -7,6 +18,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E4E4E4',
     padding: 30,
     position: 'relative',
+    fontFamily: 'Montserrat',
   },
   section: {
     margin: 10,
@@ -16,6 +28,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 10,
+    fontWeight: 'bold',
   },
   text: {
     fontSize: 12,
