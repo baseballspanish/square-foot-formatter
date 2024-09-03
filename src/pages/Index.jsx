@@ -26,6 +26,7 @@ const Index = () => {
   const [error, setError] = useState('');
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [total, setTotal] = useState(0);
+  const [logoUrl, setLogoUrl] = useState('');
 
   // Calculator effect
   useEffect(() => {
@@ -55,10 +56,12 @@ const Index = () => {
     const total = newPercentages.reduce((sum, percent) => sum + percent, 0);
     if (total > 100) {
       setCalculatorError('Total percentage cannot exceed 100%');
+    } else if (total < 100) {
+      setCalculatorError('Total percentage is below 100%');
     } else {
       setCalculatorError('');
-      setPercentages(newPercentages);
     }
+    setPercentages(newPercentages);
   };
 
   // Invoice total effect
@@ -100,6 +103,17 @@ const Index = () => {
       setError('Failed to generate PDF. Please try again.');
     } finally {
       setIsGeneratingPDF(false);
+    }
+  };
+
+  const handleLogoUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLogoUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -192,6 +206,11 @@ const Index = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            <Input
+              type="file"
+              accept="image/*"
+              onChange={handleLogoUpload}
+            />
           </div>
           {services.map((service, index) => (
             <div key={index} className="grid grid-cols-1 gap-2 mb-4">
@@ -236,6 +255,7 @@ const Index = () => {
                 email={email}
                 services={services}
                 total={total}
+                logoUrl={logoUrl}
               />
             }
           >

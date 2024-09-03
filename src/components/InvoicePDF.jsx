@@ -1,5 +1,5 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer';
 
 // Attempt to register the Montserrat font, but use a fallback if it fails
 try {
@@ -22,15 +22,26 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
   },
   header: {
-    fontSize: 24,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 20,
+  },
+  headerText: {
+    flex: 1,
+  },
+  headerTitle: {
+    fontSize: 24,
     textAlign: 'center',
   },
   subHeader: {
     fontSize: 12,
     color: '#666',
     textAlign: 'center',
-    marginBottom: 20,
+  },
+  logo: {
+    width: 100,
+    height: 100,
   },
   billingInfo: {
     marginBottom: 20,
@@ -86,11 +97,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const InvoicePDF = ({ clientName, companyName, email, services, total }) => (
+const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl }) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <Text style={styles.header}>MERAV INTERIORS</Text>
-      <Text style={styles.subHeader}>BY KATIE ROBERTS</Text>
+      <View style={styles.header}>
+        <View style={styles.headerText}>
+          <Text style={styles.headerTitle}>MERAV INTERIORS</Text>
+          <Text style={styles.subHeader}>BY KATIE ROBERTS</Text>
+        </View>
+        {logoUrl && <Image style={styles.logo} src={logoUrl} />}
+      </View>
       
       <View style={styles.billingInfo}>
         <Text style={styles.billingText}>BILLED TO: {clientName}</Text>
