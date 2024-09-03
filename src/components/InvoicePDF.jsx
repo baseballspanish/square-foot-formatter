@@ -78,9 +78,15 @@ const styles = StyleSheet.create({
     margin: 5,
     fontSize: 10,
   },
+  total: {
+    marginTop: 20,
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'right',
+  },
 });
 
-const InvoicePDF = ({ clientName, companyName, email, services }) => (
+const InvoicePDF = ({ clientName, companyName, email, services, total }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <Text style={styles.header}>MERAV INTERIORS</Text>
@@ -126,6 +132,8 @@ const InvoicePDF = ({ clientName, companyName, email, services }) => (
           </View>
         ))}
       </View>
+
+      <Text style={styles.total}>TOTAL: ${total.toFixed(2)}</Text>
     </Page>
   </Document>
 );

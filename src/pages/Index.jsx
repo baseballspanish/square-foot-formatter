@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { BlobProvider } from '@react-pdf/renderer';
 import InvoicePDF from '../components/InvoicePDF';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Index = () => {
   const [clientName, setClientName] = useState('');
@@ -16,10 +15,19 @@ const Index = () => {
   ]);
   const [error, setError] = useState('');
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const newTotal = services.reduce((sum, service) => sum + parseFloat(service.subtotal || 0), 0);
+    setTotal(newTotal);
+  }, [services]);
 
   const handleServiceChange = (index, field, value) => {
     const updatedServices = [...services];
     updatedServices[index][field] = value;
+    if (field === 'subtotal') {
+      updatedServices[index][field] = parseFloat(value) || 0;
+    }
     setServices(updatedServices);
   };
 
@@ -96,12 +104,15 @@ const Index = () => {
                 type="number"
                 placeholder="Subtotal"
                 value={service.subtotal}
-                onChange={(e) => handleServiceChange(index, 'subtotal', parseFloat(e.target.value) || 0)}
+                onChange={(e) => handleServiceChange(index, 'subtotal', e.target.value)}
               />
               <Button onClick={() => removeService(index)} variant="destructive">Remove Service</Button>
             </div>
           ))}
           <Button onClick={addService} className="mb-4">Add Service</Button>
+          <div className="text-right mb-4">
+            <strong>Total: ${total.toFixed(2)}</strong>
+          </div>
           {error && (
             <Alert variant="destructive" className="mb-4">
               <AlertDescription>{error}</AlertDescription>
@@ -114,6 +125,7 @@ const Index = () => {
                 companyName={companyName}
                 email={email}
                 services={services}
+                total={total}
               />
             }
           >
