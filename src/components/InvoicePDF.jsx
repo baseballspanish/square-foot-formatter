@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl }) => (
+const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, invoiceTitle }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
@@ -108,7 +108,7 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl }
         </View>
       </View>
       
-      <Text style={styles.title}>INVOICE</Text>
+      <Text style={styles.title}>{invoiceTitle}</Text>
       
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Bill To:</Text>
@@ -118,14 +118,12 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl }
       <View style={styles.table}>
         <View style={[styles.tableRow, styles.tableHeader]}>
           <Text style={styles.tableCell}>Description</Text>
-          <Text style={styles.tableCell}>Location</Text>
           <Text style={styles.tableCell}>Category</Text>
           <Text style={styles.tableCell}>Amount</Text>
         </View>
         {services.map((service, index) => (
           <View style={styles.tableRow} key={index}>
             <Text style={styles.tableCell}>{service.description}</Text>
-            <Text style={styles.tableCell}>{service.location}</Text>
             <Text style={styles.tableCell}>{service.category}</Text>
             <Text style={styles.tableCell}>${service.subtotal.toFixed(2)}</Text>
           </View>

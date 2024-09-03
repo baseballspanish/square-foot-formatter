@@ -21,6 +21,7 @@ const Index = () => {
   const [clientName, setClientName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
+  const [invoiceTitle, setInvoiceTitle] = useState('INVOICE'); // New state for invoice title
   const [services, setServices] = useState([
     { description: '', category: '', subtotal: 0 }
   ]);
@@ -215,6 +216,11 @@ const Index = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
             <Input
+              placeholder="Invoice Title"
+              value={invoiceTitle}
+              onChange={(e) => setInvoiceTitle(e.target.value)}
+            />
+            <Input
               type="file"
               accept="image/*"
               onChange={(e) => handleLogoUpload(e, setInvoiceLogoUrl)}
@@ -259,6 +265,7 @@ const Index = () => {
                 services={services}
                 total={total}
                 logoUrl={invoiceLogoUrl}
+                invoiceTitle={invoiceTitle}
               />
             }
           >
