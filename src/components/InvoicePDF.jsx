@@ -1,14 +1,10 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Font, Image } from '@react-pdf/renderer';
-import MontserratRegular from '../assets/MontserratRegularBase64';
-import MontserratBold from '../assets/MontserratBoldBase64';
 
+// Register Times New Roman font
 Font.register({
-  family: 'Montserrat',
-  fonts: [
-    { src: MontserratRegular, fontWeight: 'normal' },
-    { src: MontserratBold, fontWeight: 'bold' },
-  ],
+  family: 'Times-Roman',
+  src: 'https://fonts.cdnfonts.com/s/56973/times new roman.woff',
 });
 
 const styles = StyleSheet.create({
@@ -16,7 +12,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
     padding: 30,
-    fontFamily: 'Montserrat',
+    fontFamily: 'Times-Roman',
   },
   header: {
     flexDirection: 'row',
