@@ -1,16 +1,18 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
-import MontserratRegularBase64 from '../assets/MontserratRegularBase64';
-import MontserratBoldBase64 from '../assets/MontserratBoldBase64';
 
-// Register the Montserrat font using base64 encoding
-Font.register({
-  family: 'Montserrat',
-  fonts: [
-    { src: `data:font/truetype;base64,${MontserratRegularBase64}`, fontWeight: 'normal' },
-    { src: `data:font/truetype;base64,${MontserratBoldBase64}`, fontWeight: 'bold' },
-  ],
-});
+// Attempt to register the Montserrat font, but use a fallback if it fails
+try {
+  Font.register({
+    family: 'Montserrat',
+    fonts: [
+      { src: 'https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459WlhyyTh89Y.woff2', fontWeight: 'normal' },
+      { src: 'https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_dJE3gnD_g.woff2', fontWeight: 'bold' },
+    ],
+  });
+} catch (error) {
+  console.warn('Failed to load Montserrat font:', error);
+}
 
 // Register other fonts
 Font.register({
