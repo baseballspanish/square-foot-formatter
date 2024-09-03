@@ -17,10 +17,27 @@ const Index = () => {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [total, setTotal] = useState(0);
 
+  // New state variables for square footage calculator
+  const [squareFootage, setSquareFootage] = useState('');
+  const [pricePerSquareFoot, setPricePerSquareFoot] = useState('');
+  const [numberOfPayments, setNumberOfPayments] = useState('');
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [pricePerPayment, setPricePerPayment] = useState(0);
+
   useEffect(() => {
     const newTotal = services.reduce((sum, service) => sum + parseFloat(service.subtotal || 0), 0);
     setTotal(newTotal);
   }, [services]);
+
+  useEffect(() => {
+    const calculatedTotal = squareFootage * pricePerSquareFoot;
+    setTotalPrice(calculatedTotal);
+    if (numberOfPayments > 0) {
+      setPricePerPayment(calculatedTotal / numberOfPayments);
+    } else {
+      setPricePerPayment(0);
+    }
+  }, [squareFootage, pricePerSquareFoot, numberOfPayments]);
 
   const handleServiceChange = (index, field, value) => {
     const updatedServices = [...services];
@@ -60,6 +77,38 @@ const Index = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Square Footage Calculator</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 gap-4 mb-4">
+            <Input
+              type="number"
+              placeholder="Square Footage"
+              value={squareFootage}
+              onChange={(e) => setSquareFootage(parseFloat(e.target.value) || 0)}
+            />
+            <Input
+              type="number"
+              placeholder="Price per Square Foot"
+              value={pricePerSquareFoot}
+              onChange={(e) => setPricePerSquareFoot(parseFloat(e.target.value) || 0)}
+            />
+            <Input
+              type="number"
+              placeholder="Number of Payments"
+              value={numberOfPayments}
+              onChange={(e) => setNumberOfPayments(parseInt(e.target.value) || 0)}
+            />
+          </div>
+          <div className="text-right mb-4">
+            <p><strong>Total Price: ${totalPrice.toFixed(2)}</strong></p>
+            <p><strong>Price per Payment: ${pricePerPayment.toFixed(2)}</strong></p>
+          </div>
+        </CardContent>
+      </Card>
+
       <Card className="mb-6">
         <CardHeader>
           <CardTitle>Invoice Generator</CardTitle>
