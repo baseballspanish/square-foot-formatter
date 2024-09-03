@@ -110,14 +110,23 @@ const Index = () => {
           <Button onClick={calculatePayments} className="w-full mb-4" disabled={!!error}>Calculate Payments</Button>
           {calculationDone && (
             <PDFDownloadLink
-              document={<InvoicePDF squareFeet={squareFeet} pricePerSqFt={pricePerSqFt} totalCost={totalCost} payments={payments} percentages={percentages} uploadedImage={uploadedImage} />}
+              document={
+                <InvoicePDF
+                  squareFeet={squareFeet}
+                  pricePerSqFt={pricePerSqFt}
+                  totalCost={totalCost}
+                  payments={payments}
+                  percentages={percentages}
+                  uploadedImage={uploadedImage}
+                />
+              }
               fileName="invoice.pdf"
             >
-              {({ blob, url, loading, error }) => 
+              {({ blob, url, loading, error }) => (
                 <Button className="w-full" disabled={loading}>
                   {loading ? 'Loading document...' : 'Download PDF'}
                 </Button>
-              }
+              )}
             </PDFDownloadLink>
           )}
         </CardContent>
