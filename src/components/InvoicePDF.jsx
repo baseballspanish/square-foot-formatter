@@ -5,29 +5,14 @@ import {
   Text,
   View,
   StyleSheet,
-  Font,
   Image
 } from '@react-pdf/renderer';
-
-// Register fonts
-Font.register({
-  family: 'OpenSans',
-  fonts: [
-    { src: 'https://fonts.gstatic.com/s/opensans/v18/mem8YaGs126MiZpBA-UFVZ0e.ttf' },
-    { src: 'https://fonts.gstatic.com/s/opensans/v18/mem5YaGs126MiZpBA-UN7rgOUuhs.ttf', fontWeight: 'bold' },
-  ],
-});
-
-Font.register({
-  family: 'GreatVibes',
-  src: 'https://fonts.gstatic.com/s/greatvibes/v7/RWmMoKWR9v4ksMfaWd_JN9XFiaQ.ttf',
-});
 
 // Create styles
 const styles = StyleSheet.create({
   page: {
     padding: 30,
-    fontFamily: 'OpenSans',
+    fontFamily: 'Helvetica',
     fontSize: 10,
   },
   header: {
@@ -36,7 +21,7 @@ const styles = StyleSheet.create({
   },
   logoText: {
     fontSize: 36,
-    fontFamily: 'GreatVibes',
+    fontFamily: 'Helvetica-Bold',
   },
   companyName: {
     fontSize: 24,
@@ -45,7 +30,7 @@ const styles = StyleSheet.create({
   },
   byline: {
     fontSize: 12,
-    fontFamily: 'OpenSans',
+    fontFamily: 'Helvetica',
     textTransform: 'uppercase',
     letterSpacing: 1,
     marginBottom: 30,
@@ -54,7 +39,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   boldText: {
-    fontWeight: 'bold',
+    fontFamily: 'Helvetica-Bold',
   },
   tableHeader: {
     marginBottom: 10,
@@ -97,7 +82,7 @@ const styles = StyleSheet.create({
 
 const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, invoiceTitle, paymentLink }) => (
   <Document>
-    <Page style={styles.page}>
+    <Page size="A4" style={styles.page}>
       <View style={styles.header}>
         {logoUrl && <Image style={styles.logo} src={logoUrl} />}
         <Text style={styles.logoText}>{invoiceTitle || 'INVOICE'}</Text>
