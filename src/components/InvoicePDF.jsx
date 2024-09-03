@@ -88,9 +88,14 @@ const styles = StyleSheet.create({
     height: 'auto',
     marginBottom: 10,
   },
+  paymentLink: {
+    color: 'blue',
+    textDecoration: 'underline',
+    marginTop: 10,
+  },
 });
 
-const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, invoiceTitle }) => (
+const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, invoiceTitle, paymentLink }) => (
   <Document>
     <Page style={styles.page}>
       <View style={styles.header}>
@@ -122,7 +127,7 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, 
             SUBTOTAL
           </Text>
         </View>
-        {services.map((service, index) => (
+        {services && services.map((service, index) => (
           <View key={index} style={styles.tableRow}>
             <Text style={styles.cell}>{service.location || 'N/A'}</Text>
             <Text style={styles.cellLarge}>{service.description}</Text>
@@ -135,6 +140,12 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, 
       <View style={styles.total}>
         <Text style={styles.boldText}>Total: ${total.toFixed(2)}</Text>
       </View>
+
+      {paymentLink && (
+        <Text style={styles.paymentLink}>
+          Payment Link: {paymentLink}
+        </Text>
+      )}
     </Page>
   </Document>
 );
