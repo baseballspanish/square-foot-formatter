@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: 30,
+    marginTop: 20, // Added top margin to push content down
   },
   logo1: {
     width: 150,
