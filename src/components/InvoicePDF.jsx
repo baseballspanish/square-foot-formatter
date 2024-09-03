@@ -20,13 +20,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 30,
   },
-  topLeftLogo: {
+  logo1: {
     width: 150,
     height: 'auto',
     marginBottom: 20,
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
   },
-  centerLogo: {
+  logo2: {
     width: 400,
     height: 'auto',
     marginBottom: 20,
@@ -76,8 +76,8 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, 
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.header}>
-        {logoUrl && <Image style={styles.topLeftLogo} src={logoUrl} />}
-        {logoUrl2 && <Image style={styles.centerLogo} src={logoUrl2} />}
+        {logoUrl && <Image style={styles.logo1} src={logoUrl} />}
+        {logoUrl2 && <Image style={styles.logo2} src={logoUrl2} />}
       </View>
 
       <View style={styles.section}>
