@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import InvoicePDF from '../components/InvoicePDF';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Index = () => {
   const [squareFeet, setSquareFeet] = useState('');
@@ -15,6 +16,7 @@ const Index = () => {
   const [totalCost, setTotalCost] = useState(0);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [calculationDone, setCalculationDone] = useState(false);
+  const [selectedFont, setSelectedFont] = useState('Helvetica');
 
   const calculatePayments = () => {
     const total = parseFloat(squareFeet) * parseFloat(pricePerSqFt);
@@ -102,6 +104,16 @@ const Index = () => {
             onChange={handleImageUpload}
             className="mb-4"
           />
+          <Select onValueChange={setSelectedFont} defaultValue={selectedFont} className="mb-4">
+            <SelectTrigger>
+              <SelectValue placeholder="Select font" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Helvetica">Helvetica</SelectItem>
+              <SelectItem value="Times-Roman">Times New Roman</SelectItem>
+              <SelectItem value="Courier">Courier</SelectItem>
+            </SelectContent>
+          </Select>
           {error && (
             <Alert variant="destructive" className="mb-4">
               <AlertDescription>{error}</AlertDescription>
@@ -118,6 +130,7 @@ const Index = () => {
                   payments={payments}
                   percentages={percentages}
                   uploadedImage={uploadedImage}
+                  selectedFont={selectedFont}
                 />
               }
               fileName="invoice.pdf"
