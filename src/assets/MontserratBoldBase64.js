@@ -1,0 +1,1 @@
+export default "BASE64_ENCODED_MONTSERRAT_BOLD_FONT";
