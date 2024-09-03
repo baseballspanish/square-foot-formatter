@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import InvoicePDF from '../components/InvoicePDF';
 
 const Index = () => {
   const [squareFeet, setSquareFeet] = useState('');
@@ -10,12 +12,14 @@ const Index = () => {
   const [percentages, setPercentages] = useState([50, 30, 10, 10]);
   const [payments, setPayments] = useState([]);
   const [error, setError] = useState('');
+  const [totalCost, setTotalCost] = useState(0);
 
   const calculatePayments = () => {
-    const totalCost = squareFeet * pricePerSqFt;
-    let remainingCost = totalCost;
+    const total = squareFeet * pricePerSqFt;
+    setTotalCost(total);
+    let remainingCost = total;
     const newPayments = percentages.map((percentage, index) => {
-      const payment = (totalCost * percentage) / 100;
+      const payment = (total * percentage) / 100;
       remainingCost -= payment;
       if (index === percentages.length - 1) {
         // Last payment, don't round
@@ -83,7 +87,19 @@ const Index = () => {
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-          <Button onClick={calculatePayments} className="w-full" disabled={!!error}>Calculate Payments</Button>
+          <Button onClick={calculatePayments} className="w-full mb-4" disabled={!!error}>Calculate Payments</Button>
+          {payments.length > 0 && (
+            <PDFDownloadLink
+              document={<InvoicePDF squareFeet={squareFeet} pricePerSqFt={pricePerSqFt} totalCost={totalCost} payments={payments} percentages={percentages} />}
+              fileName="invoice.pdf"
+            >
+              {({ blob, url, loading, error }) => 
+                <Button className="w-full" disabled={loading}>
+                  {loading ? 'Loading document...' : 'Download PDF'}
+                </Button>
+              }
+            </PDFDownloadLink>
+          )}
         </CardContent>
       </Card>
 
@@ -95,7 +111,7 @@ const Index = () => {
           <CardContent>
             <div className="grid grid-cols-2 gap-2">
               <div className="font-bold">Total Cost:</div>
-              <div>${(squareFeet * pricePerSqFt).toFixed(2)}</div>
+              <div>${totalCost.toFixed(2)}</div>
               {payments.map((payment, index) => (
                 <React.Fragment key={index}>
                   <div className="font-bold">Payment {index + 1} ({percentages[index]}%):</div>
