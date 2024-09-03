@@ -6,7 +6,6 @@ import {
   View,
   StyleSheet,
   Font,
-  Link,
   Image
 } from '@react-pdf/renderer';
 
@@ -14,8 +13,8 @@ import {
 Font.register({
   family: 'OpenSans',
   fonts: [
-    { src: 'https://fonts.gstatic.com/s/opensans/v18/mem8YaGs126MiZpBA-UFVZ0e.ttf' }, // OpenSans Regular
-    { src: 'https://fonts.gstatic.com/s/opensans/v18/mem5YaGs126MiZpBA-UN7rgOUuhs.ttf', fontWeight: 'bold' }, // OpenSans Bold
+    { src: 'https://fonts.gstatic.com/s/opensans/v18/mem8YaGs126MiZpBA-UFVZ0e.ttf' },
+    { src: 'https://fonts.gstatic.com/s/opensans/v18/mem5YaGs126MiZpBA-UN7rgOUuhs.ttf', fontWeight: 'bold' },
   ],
 });
 
@@ -84,10 +83,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: 'right',
   },
-  paymentLink: {
-    color: 'blue',
-    textDecoration: 'underline',
-  },
   logo: {
     width: 100,
     height: 'auto',
@@ -95,26 +90,26 @@ const styles = StyleSheet.create({
   },
 });
 
-const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, invoiceTitle, paymentLink }) => (
+const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, invoiceTitle }) => (
   <Document>
     <Page style={styles.page}>
       <View style={styles.header}>
         {logoUrl && <Image style={styles.logo} src={logoUrl} />}
-        <Text style={styles.logoText}>{invoiceTitle}</Text>
-        <Text style={styles.companyName}>{companyName}</Text>
+        <Text style={styles.logoText}>{invoiceTitle || 'INVOICE'}</Text>
+        <Text style={styles.companyName}>{companyName || 'MERAV INTERIORS'}</Text>
         <Text style={styles.byline}>BY KATIE ROBERTS</Text>
       </View>
 
       <View style={styles.section}>
         <Text>
           <Text style={styles.boldText}>BILLED TO: </Text>
-          {clientName}
+          {clientName || 'CLIENT NAME'}
         </Text>
         <Text>
           <Text style={styles.boldText}>PAY TO: </Text>
-          {companyName}
+          {companyName || 'MERAV INTERIORS'}
         </Text>
-        <Text>{email}</Text>
+        <Text>{email || 'katie@meravinteriors.com'}</Text>
       </View>
 
       <View>
@@ -140,15 +135,6 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, 
       <View style={styles.total}>
         <Text style={styles.boldText}>Total: ${total.toFixed(2)}</Text>
       </View>
-
-      {paymentLink && (
-        <View style={styles.section}>
-          <Text style={styles.boldText}>Payment Link: </Text>
-          <Link src={paymentLink} style={styles.paymentLink}>
-            Click here to pay
-          </Link>
-        </View>
-      )}
     </Page>
   </Document>
 );
