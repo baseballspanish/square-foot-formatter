@@ -1,14 +1,14 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
-import MontserratRegular from '../assets/Montserrat-Regular.ttf';
-import MontserratBold from '../assets/Montserrat-Bold.ttf';
+import MontserratRegularBase64 from '../assets/MontserratRegularBase64';
+import MontserratBoldBase64 from '../assets/MontserratBoldBase64';
 
-// Register the Montserrat font
+// Register the Montserrat font using base64 encoding
 Font.register({
   family: 'Montserrat',
   fonts: [
-    { src: MontserratRegular, fontWeight: 'normal' },
-    { src: MontserratBold, fontWeight: 'bold' },
+    { src: `data:font/truetype;base64,${MontserratRegularBase64}`, fontWeight: 'normal' },
+    { src: `data:font/truetype;base64,${MontserratBoldBase64}`, fontWeight: 'bold' },
   ],
 });
 
@@ -28,7 +28,7 @@ const InvoicePDF = ({ squareFeet, pricePerSqFt, totalCost, payments, percentages
       backgroundColor: '#E4E4E4',
       padding: 30,
       position: 'relative',
-      fontFamily: selectedFont === 'Montserrat' ? 'Montserrat' : selectedFont,
+      fontFamily: selectedFont,
     },
     section: {
       margin: 10,

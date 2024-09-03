@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { PDFDownloadLink, BlobProvider } from '@react-pdf/renderer';
 import InvoicePDF from '../components/InvoicePDF';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -17,6 +17,7 @@ const Index = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [calculationDone, setCalculationDone] = useState(false);
   const [selectedFont, setSelectedFont] = useState('Montserrat');
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   const calculatePayments = () => {
     const total = parseFloat(squareFeet) * parseFloat(pricePerSqFt);
@@ -26,13 +27,10 @@ const Index = () => {
       const payment = (total * percentage) / 100;
       remainingCost -= payment;
       if (index === percentages.length - 1) {
-        // Last payment, don't round
         return parseFloat(payment.toFixed(2));
       }
-      // Round to nearest $10
       return Math.round(payment / 10) * 10;
     });
-    // Adjust last payment to account for rounding errors
     newPayments[newPayments.length - 1] += parseFloat(remainingCost.toFixed(2));
     setPayments(newPayments);
     setCalculationDone(true);
@@ -63,6 +61,24 @@ const Index = () => {
         setUploadedImage(reader.result);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDownloadPDF = async (blob) => {
+    setIsGeneratingPDF(true);
+    try {
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'invoice.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      setError('Failed to generate PDF. Please try again.');
+    } finally {
+      setIsGeneratingPDF(false);
     }
   };
 
@@ -122,7 +138,7 @@ const Index = () => {
           )}
           <Button onClick={calculatePayments} className="w-full mb-4" disabled={!!error}>Calculate Payments</Button>
           {calculationDone && (
-            <PDFDownloadLink
+            <BlobProvider
               document={
                 <InvoicePDF
                   squareFeet={squareFeet}
@@ -134,14 +150,17 @@ const Index = () => {
                   selectedFont={selectedFont}
                 />
               }
-              fileName="invoice.pdf"
             >
               {({ blob, url, loading, error }) => (
-                <Button className="w-full" disabled={loading}>
-                  {loading ? 'Loading document...' : 'Download PDF'}
+                <Button
+                  className="w-full"
+                  onClick={() => handleDownloadPDF(blob)}
+                  disabled={loading || isGeneratingPDF}
+                >
+                  {loading || isGeneratingPDF ? 'Generating PDF...' : 'Download PDF'}
                 </Button>
               )}
-            </PDFDownloadLink>
+            </BlobProvider>
           )}
         </CardContent>
       </Card>
