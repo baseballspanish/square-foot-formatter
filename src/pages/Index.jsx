@@ -94,7 +94,11 @@ const Index = () => {
 
   const handleDownloadPDF = async (blob, filename) => {
     setIsGeneratingPDF(true);
+    setError('');
     try {
+      if (!blob) {
+        throw new Error('PDF blob is undefined');
+      }
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
@@ -104,7 +108,7 @@ const Index = () => {
       document.body.removeChild(link);
     } catch (error) {
       console.error('Error generating PDF:', error);
-      setError('Failed to generate PDF. Please try again.');
+      setError(`Failed to generate PDF: ${error.message}`);
     } finally {
       setIsGeneratingPDF(false);
     }
@@ -182,7 +186,7 @@ const Index = () => {
               />
             }
           >
-            {({ blob, url, loading, error }) => (
+            {({ blob, url, loading, error: pdfError }) => (
               <Button
                 className="w-full"
                 onClick={() => handleDownloadPDF(blob, 'pricing-calculator.pdf')}
@@ -192,6 +196,11 @@ const Index = () => {
               </Button>
             )}
           </BlobProvider>
+          {error && (
+            <Alert variant="destructive" className="mt-4">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
         </CardContent>
       </Card>
 
@@ -288,14 +297,14 @@ const Index = () => {
                 email={email}
                 services={services}
                 total={total}
-                logoUrl1={invoiceLogoUrl1}
+                logoUrl={invoiceLogoUrl1}
                 logoUrl2={invoiceLogoUrl2}
                 invoiceTitle={invoiceTitle}
                 paymentLink={paymentLink}
               />
             }
           >
-            {({ blob, url, loading, error }) => (
+            {({ blob, url, loading, error: pdfError }) => (
               <Button
                 className="w-full"
                 onClick={() => handleDownloadPDF(blob, 'invoice.pdf')}
