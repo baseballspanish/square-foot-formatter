@@ -7,14 +7,15 @@ import { BlobProvider } from '@react-pdf/renderer';
 import InvoicePDF from '../components/InvoicePDF';
 
 const Index = () => {
-  // Calculator state
-  const [squareFootage, setSquareFootage] = useState('');
-  const [pricePerSquareFoot, setPricePerSquareFoot] = useState('');
-  const [numberOfPayments, setNumberOfPayments] = useState('');
-  const [calculatedTotal, setCalculatedTotal] = useState(0);
-  const [pricePerPayment, setPricePerPayment] = useState(0);
+  // New calculator state
+  const [squareFeet, setSquareFeet] = useState('');
+  const [pricePerSqFt, setPricePerSqFt] = useState('');
+  const [percentages, setPercentages] = useState([50, 30, 10, 10]);
+  const [totalCost, setTotalCost] = useState(0);
+  const [payments, setPayments] = useState([0, 0, 0, 0]);
+  const [calculatorError, setCalculatorError] = useState('');
 
-  // Invoice generator state
+  // Existing invoice generator state
   const [clientName, setClientName] = useState('');
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
@@ -27,14 +28,39 @@ const Index = () => {
 
   // Calculator effect
   useEffect(() => {
-    const total = parseFloat(squareFootage) * parseFloat(pricePerSquareFoot);
-    setCalculatedTotal(isNaN(total) ? 0 : total);
-    
-    const perPayment = total / parseFloat(numberOfPayments);
-    setPricePerPayment(isNaN(perPayment) ? 0 : perPayment);
-  }, [squareFootage, pricePerSquareFoot, numberOfPayments]);
+    const sqFt = parseFloat(squareFeet);
+    const price = parseFloat(pricePerSqFt);
+    if (!isNaN(sqFt) && !isNaN(price)) {
+      const cost = sqFt * price;
+      setTotalCost(cost);
+      calculatePayments(cost);
+    } else {
+      setTotalCost(0);
+      setPayments([0, 0, 0, 0]);
+    }
+  }, [squareFeet, pricePerSqFt, percentages]);
 
-  // Invoice total effect
+  const calculatePayments = (cost) => {
+    const newPayments = percentages.map((percentage, index) => {
+      const payment = (cost * percentage) / 100;
+      return index === percentages.length - 1 ? payment : Math.round(payment / 10) * 10;
+    });
+    setPayments(newPayments);
+  };
+
+  const handlePercentageChange = (index, value) => {
+    const newPercentages = [...percentages];
+    newPercentages[index] = parseFloat(value) || 0;
+    const total = newPercentages.reduce((sum, percent) => sum + percent, 0);
+    if (total > 100) {
+      setCalculatorError('Total percentage cannot exceed 100%');
+    } else {
+      setCalculatorError('');
+      setPercentages(newPercentages);
+    }
+  };
+
+  // Existing invoice total effect
   useEffect(() => {
     const newTotal = services.reduce((sum, service) => sum + parseFloat(service.subtotal || 0), 0);
     setTotal(newTotal);
@@ -80,32 +106,44 @@ const Index = () => {
     <div className="container mx-auto p-4">
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Square Footage Calculator</CardTitle>
+          <CardTitle>Invoice Pricing Calculator</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <Input
               type="number"
-              placeholder="Square Footage"
-              value={squareFootage}
-              onChange={(e) => setSquareFootage(e.target.value)}
+              placeholder="Square Feet"
+              value={squareFeet}
+              onChange={(e) => setSquareFeet(e.target.value)}
             />
             <Input
               type="number"
               placeholder="Price per Square Foot"
-              value={pricePerSquareFoot}
-              onChange={(e) => setPricePerSquareFoot(e.target.value)}
-            />
-            <Input
-              type="number"
-              placeholder="Number of Payments"
-              value={numberOfPayments}
-              onChange={(e) => setNumberOfPayments(e.target.value)}
+              value={pricePerSqFt}
+              onChange={(e) => setPricePerSqFt(e.target.value)}
             />
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            {percentages.map((percentage, index) => (
+              <Input
+                key={index}
+                type="number"
+                placeholder={`Payment ${index + 1} %`}
+                value={percentage}
+                onChange={(e) => handlePercentageChange(index, e.target.value)}
+              />
+            ))}
+          </div>
+          {calculatorError && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertDescription>{calculatorError}</AlertDescription>
+            </Alert>
+          )}
           <div className="text-right">
-            <p><strong>Total: ${calculatedTotal.toFixed(2)}</strong></p>
-            <p><strong>Price per Payment: ${pricePerPayment.toFixed(2)}</strong></p>
+            <p><strong>Total Cost: ${totalCost.toFixed(2)}</strong></p>
+            {payments.map((payment, index) => (
+              <p key={index}><strong>Payment {index + 1}: ${payment.toFixed(2)}</strong></p>
+            ))}
           </div>
         </CardContent>
       </Card>
