@@ -22,14 +22,15 @@ const Index = () => {
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
   const [invoiceTitle, setInvoiceTitle] = useState('INVOICE');
-  const [paymentLink, setPaymentLink] = useState(''); // New state for payment link
+  const [paymentLink, setPaymentLink] = useState('');
   const [services, setServices] = useState([
     { description: '', category: '', subtotal: 0 }
   ]);
   const [error, setError] = useState('');
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [total, setTotal] = useState(0);
-  const [invoiceLogoUrl, setInvoiceLogoUrl] = useState('');
+  const [invoiceLogoUrl1, setInvoiceLogoUrl1] = useState('');
+  const [invoiceLogoUrl2, setInvoiceLogoUrl2] = useState('');
 
   // Calculator effect
   useEffect(() => {
@@ -226,11 +227,28 @@ const Index = () => {
               value={paymentLink}
               onChange={(e) => setPaymentLink(e.target.value)}
             />
-            <Input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleLogoUpload(e, setInvoiceLogoUrl)}
-            />
+            <div>
+              <label htmlFor="logo1" className="block text-sm font-medium text-gray-700 mb-1">
+                Logo 1 (Top Left)
+              </label>
+              <Input
+                id="logo1"
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleLogoUpload(e, setInvoiceLogoUrl1)}
+              />
+            </div>
+            <div>
+              <label htmlFor="logo2" className="block text-sm font-medium text-gray-700 mb-1">
+                Logo 2 (Centered)
+              </label>
+              <Input
+                id="logo2"
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleLogoUpload(e, setInvoiceLogoUrl2)}
+              />
+            </div>
           </div>
           {services.map((service, index) => (
             <div key={index} className="grid grid-cols-1 gap-2 mb-4">
@@ -270,7 +288,8 @@ const Index = () => {
                 email={email}
                 services={services}
                 total={total}
-                logoUrl={invoiceLogoUrl}
+                logoUrl1={invoiceLogoUrl1}
+                logoUrl2={invoiceLogoUrl2}
                 invoiceTitle={invoiceTitle}
                 paymentLink={paymentLink}
               />
