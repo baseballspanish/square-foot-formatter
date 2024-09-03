@@ -15,16 +15,16 @@ const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
-    padding: 40,
+    padding: 30,
     fontFamily: 'Montserrat',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 40,
+    marginBottom: 20,
   },
   logo: {
-    width: 120,
+    width: 100,
     height: 'auto',
   },
   companyInfo: {
@@ -34,92 +34,67 @@ const styles = StyleSheet.create({
   companyName: {
     fontSize: 14,
     fontWeight: 'bold',
-    marginBottom: 4,
   },
   companyDetail: {
     fontSize: 10,
     color: '#666',
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#333',
+    textAlign: 'center',
   },
-  clientInfo: {
-    marginBottom: 30,
+  section: {
+    marginBottom: 10,
   },
-  label: {
-    fontSize: 10,
-    color: '#666',
-    marginBottom: 4,
-  },
-  value: {
+  sectionTitle: {
     fontSize: 12,
-    color: '#333',
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  text: {
+    fontSize: 10,
+    marginBottom: 3,
   },
   table: {
     flexDirection: 'column',
-    marginBottom: 30,
-  },
-  tableHeader: {
-    flexDirection: 'row',
-    borderBottomColor: '#EEE',
-    borderBottomWidth: 1,
-    alignItems: 'center',
-    height: 30,
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
+    marginTop: 20,
+    borderWidth: 1,
+    borderColor: '#000',
   },
   tableRow: {
     flexDirection: 'row',
-    borderBottomColor: '#EEE',
     borderBottomWidth: 1,
-    alignItems: 'center',
-    height: 30,
+    borderBottomColor: '#000',
   },
-  tableCol1: {
-    width: '40%',
-    paddingLeft: 8,
-  },
-  tableCol2: {
-    width: '20%',
-    textAlign: 'center',
-  },
-  tableCol3: {
-    width: '20%',
-    textAlign: 'center',
-  },
-  tableCol4: {
-    width: '20%',
-    textAlign: 'right',
-    paddingRight: 8,
+  tableHeader: {
+    backgroundColor: '#f0f0f0',
   },
   tableCell: {
+    flex: 1,
+    padding: 5,
     fontSize: 10,
-    color: '#333',
   },
   total: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginTop: 12,
+    marginTop: 10,
   },
   totalLabel: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 'bold',
-    color: '#333',
-    marginRight: 8,
+    marginRight: 10,
   },
-  totalValue: {
-    fontSize: 14,
+  totalAmount: {
+    fontSize: 12,
     fontWeight: 'bold',
-    color: '#333',
   },
   footer: {
     position: 'absolute',
     bottom: 30,
-    left: 40,
-    right: 40,
+    left: 30,
+    right: 30,
     textAlign: 'center',
     fontSize: 10,
     color: '#666',
@@ -139,31 +114,31 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl }
       
       <Text style={styles.title}>INVOICE</Text>
       
-      <View style={styles.clientInfo}>
-        <Text style={styles.label}>BILLED TO</Text>
-        <Text style={styles.value}>{clientName}</Text>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Bill To:</Text>
+        <Text style={styles.text}>{clientName}</Text>
       </View>
 
       <View style={styles.table}>
-        <View style={styles.tableHeader}>
-          <Text style={[styles.tableCol1, styles.tableCell]}>DESCRIPTION</Text>
-          <Text style={[styles.tableCol2, styles.tableCell]}>LOCATION</Text>
-          <Text style={[styles.tableCol3, styles.tableCell]}>CATEGORY</Text>
-          <Text style={[styles.tableCol4, styles.tableCell]}>AMOUNT</Text>
+        <View style={[styles.tableRow, styles.tableHeader]}>
+          <Text style={styles.tableCell}>Description</Text>
+          <Text style={styles.tableCell}>Location</Text>
+          <Text style={styles.tableCell}>Category</Text>
+          <Text style={styles.tableCell}>Amount</Text>
         </View>
         {services.map((service, index) => (
           <View style={styles.tableRow} key={index}>
-            <Text style={[styles.tableCol1, styles.tableCell]}>{service.description}</Text>
-            <Text style={[styles.tableCol2, styles.tableCell]}>{service.location}</Text>
-            <Text style={[styles.tableCol3, styles.tableCell]}>{service.category}</Text>
-            <Text style={[styles.tableCol4, styles.tableCell]}>${service.subtotal.toFixed(2)}</Text>
+            <Text style={styles.tableCell}>{service.description}</Text>
+            <Text style={styles.tableCell}>{service.location}</Text>
+            <Text style={styles.tableCell}>{service.category}</Text>
+            <Text style={styles.tableCell}>${service.subtotal.toFixed(2)}</Text>
           </View>
         ))}
       </View>
 
       <View style={styles.total}>
-        <Text style={styles.totalLabel}>TOTAL</Text>
-        <Text style={styles.totalValue}>${total.toFixed(2)}</Text>
+        <Text style={styles.totalLabel}>Total:</Text>
+        <Text style={styles.totalAmount}>${total.toFixed(2)}</Text>
       </View>
 
       <Text style={styles.footer}>Thank you for your business!</Text>
