@@ -1,6 +1,15 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image, Font } from '@react-pdf/renderer';
 
+// Register the Helvetica font
+Font.register({
+  family: 'Helvetica',
+  fonts: [
+    { src: 'https://fonts.gstatic.com/s/helveticaneue/v70/1Ptsg8zYS_SKggPNyCg4QIFqPfE.ttf', fontWeight: 'normal' },
+    { src: 'https://fonts.gstatic.com/s/helveticaneue/v70/1Ptsg8zYS_SKggPNyCg4TYFqPfE.ttf', fontWeight: 'bold' },
+  ],
+});
+
 const InvoicePDF = ({ squareFeet, pricePerSqFt, totalCost, payments, percentages, uploadedImage, selectedFont }) => {
   const styles = StyleSheet.create({
     page: {
@@ -8,7 +17,7 @@ const InvoicePDF = ({ squareFeet, pricePerSqFt, totalCost, payments, percentages
       backgroundColor: '#E4E4E4',
       padding: 30,
       position: 'relative',
-      fontFamily: selectedFont,
+      fontFamily: selectedFont || 'Helvetica',
     },
     section: {
       margin: 10,
