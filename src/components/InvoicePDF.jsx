@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   centerLogo: {
-    width: 200,
+    width: 400,
     height: 'auto',
     marginBottom: 20,
     alignSelf: 'center',
