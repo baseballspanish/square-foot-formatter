@@ -1,154 +1,154 @@
 import React from 'react';
-import { Document, Page, Text, View, StyleSheet, Font, Image, Link } from '@react-pdf/renderer';
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Font,
+  Link,
+  Image
+} from '@react-pdf/renderer';
 
-// Register Times New Roman font
+// Register fonts
 Font.register({
-  family: 'Times-Roman',
-  src: 'https://fonts.cdnfonts.com/s/56973/times new roman.woff',
+  family: 'OpenSans',
+  fonts: [
+    { src: 'https://fonts.gstatic.com/s/opensans/v18/mem8YaGs126MiZpBA-UFVZ0e.ttf' }, // OpenSans Regular
+    { src: 'https://fonts.gstatic.com/s/opensans/v18/mem5YaGs126MiZpBA-UN7rgOUuhs.ttf', fontWeight: 'bold' }, // OpenSans Bold
+  ],
 });
 
+Font.register({
+  family: 'GreatVibes',
+  src: 'https://fonts.gstatic.com/s/greatvibes/v7/RWmMoKWR9v4ksMfaWd_JN9XFiaQ.ttf',
+});
+
+// Create styles
 const styles = StyleSheet.create({
   page: {
-    flexDirection: 'column',
-    backgroundColor: '#FFFFFF',
     padding: 30,
-    fontFamily: 'Times-Roman',
+    fontFamily: 'OpenSans',
+    fontSize: 10,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
+    textAlign: 'center',
+    marginBottom: 30,
   },
-  logo: {
-    width: 100,
-    height: 'auto',
-  },
-  companyInfo: {
-    flexDirection: 'column',
-    alignItems: 'flex-end',
+  logoText: {
+    fontSize: 36,
+    fontFamily: 'GreatVibes',
   },
   companyName: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  companyDetail: {
-    fontSize: 10,
-    color: '#666',
-  },
-  title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  section: {
-    marginBottom: 10,
-  },
-  sectionTitle: {
-    fontSize: 12,
-    fontWeight: 'bold',
+    marginTop: 10,
     marginBottom: 5,
   },
-  text: {
-    fontSize: 10,
-    marginBottom: 3,
+  byline: {
+    fontSize: 12,
+    fontFamily: 'OpenSans',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: 30,
   },
-  table: {
-    flexDirection: 'column',
-    marginTop: 20,
-    borderWidth: 1,
+  section: {
+    marginBottom: 20,
+  },
+  boldText: {
+    fontWeight: 'bold',
+  },
+  tableHeader: {
+    marginBottom: 10,
+    marginTop: 30,
+    borderBottom: 1,
     borderColor: '#000',
   },
   tableRow: {
+    display: 'flex',
     flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: '#000',
+    borderBottom: 1,
+    borderColor: '#e0e0e0',
+    paddingBottom: 5,
+    marginBottom: 5,
   },
-  tableHeader: {
-    backgroundColor: '#f0f0f0',
-  },
-  tableCell: {
+  cell: {
     flex: 1,
-    padding: 5,
-    fontSize: 10,
+  },
+  cellLarge: {
+    flex: 2,
+  },
+  cellRight: {
+    textAlign: 'right',
   },
   total: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginTop: 10,
-  },
-  totalLabel: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginRight: 10,
-  },
-  totalAmount: {
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 30,
-    left: 30,
-    right: 30,
-    textAlign: 'center',
-    fontSize: 10,
-    color: '#666',
+    marginTop: 20,
+    textAlign: 'right',
   },
   paymentLink: {
     color: 'blue',
     textDecoration: 'underline',
   },
+  logo: {
+    width: 100,
+    height: 'auto',
+    marginBottom: 10,
+  },
 });
 
 const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, invoiceTitle, paymentLink }) => (
   <Document>
-    <Page size="A4" style={styles.page}>
+    <Page style={styles.page}>
       <View style={styles.header}>
         {logoUrl && <Image style={styles.logo} src={logoUrl} />}
-        <View style={styles.companyInfo}>
-          <Text style={styles.companyName}>{companyName}</Text>
-          <Text style={styles.companyDetail}>{email}</Text>
-        </View>
-      </View>
-      
-      <Text style={styles.title}>{invoiceTitle}</Text>
-      
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Bill To:</Text>
-        <Text style={styles.text}>{clientName}</Text>
+        <Text style={styles.logoText}>{invoiceTitle}</Text>
+        <Text style={styles.companyName}>{companyName}</Text>
+        <Text style={styles.byline}>BY KATIE ROBERTS</Text>
       </View>
 
-      <View style={styles.table}>
-        <View style={[styles.tableRow, styles.tableHeader]}>
-          <Text style={styles.tableCell}>Description</Text>
-          <Text style={styles.tableCell}>Category</Text>
-          <Text style={styles.tableCell}>Amount</Text>
+      <View style={styles.section}>
+        <Text>
+          <Text style={styles.boldText}>BILLED TO: </Text>
+          {clientName}
+        </Text>
+        <Text>
+          <Text style={styles.boldText}>PAY TO: </Text>
+          {companyName}
+        </Text>
+        <Text>{email}</Text>
+      </View>
+
+      <View>
+        <Text style={styles.tableHeader}>DESIGN FEES:</Text>
+        <View style={styles.tableRow}>
+          <Text style={[styles.cell, styles.boldText]}>LOCATION</Text>
+          <Text style={[styles.cellLarge, styles.boldText]}>DESCRIPTION</Text>
+          <Text style={[styles.cell, styles.boldText]}>SERVICE CATEGORY</Text>
+          <Text style={[styles.cell, styles.cellRight, styles.boldText]}>
+            SUBTOTAL
+          </Text>
         </View>
         {services.map((service, index) => (
-          <View style={styles.tableRow} key={index}>
-            <Text style={styles.tableCell}>{service.description}</Text>
-            <Text style={styles.tableCell}>{service.category}</Text>
-            <Text style={styles.tableCell}>${service.subtotal.toFixed(2)}</Text>
+          <View key={index} style={styles.tableRow}>
+            <Text style={styles.cell}>{service.location || 'N/A'}</Text>
+            <Text style={styles.cellLarge}>{service.description}</Text>
+            <Text style={styles.cell}>{service.category}</Text>
+            <Text style={[styles.cell, styles.cellRight]}>${service.subtotal.toFixed(2)}</Text>
           </View>
         ))}
       </View>
 
       <View style={styles.total}>
-        <Text style={styles.totalLabel}>Total:</Text>
-        <Text style={styles.totalAmount}>${total.toFixed(2)}</Text>
+        <Text style={styles.boldText}>Total: ${total.toFixed(2)}</Text>
       </View>
 
       {paymentLink && (
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Payment Link:</Text>
+          <Text style={styles.boldText}>Payment Link: </Text>
           <Link src={paymentLink} style={styles.paymentLink}>
             Click here to pay
           </Link>
         </View>
       )}
-
-      <Text style={styles.footer}>Thank you for your business!</Text>
     </Page>
   </Document>
 );
