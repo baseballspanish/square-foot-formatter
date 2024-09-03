@@ -27,7 +27,7 @@ const InvoicePDF = ({ squareFeet, pricePerSqFt, totalCost, payments, percentages
   const styles = StyleSheet.create({
     page: {
       flexDirection: 'column',
-      backgroundColor: '#E4E4E4',
+      backgroundColor: '#FFFFFF', // Changed to white
       padding: 30,
       position: 'relative',
       fontFamily: selectedFont,
