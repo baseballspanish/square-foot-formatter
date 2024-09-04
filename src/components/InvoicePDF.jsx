@@ -16,15 +16,15 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'flex-start',  // Changed from 'center' to 'flex-start'
     marginBottom: 30,
     marginTop: 30,
   },
   logo1: {
-    width: 150,
+    width: 187.5,  // Increased by 25% from 150
     height: 'auto',
     marginBottom: 20,
-    alignSelf: 'center',
+    marginLeft: '-25%',  // Move 50% to the left
   },
   logo2: {
     width: 400,
