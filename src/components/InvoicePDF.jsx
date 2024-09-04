@@ -8,21 +8,34 @@ import {
   Image,
   Font,
 } from '@react-pdf/renderer';
-import MontserratRegular from '../assets/MontserratRegularBase64';
-import MontserratBold from '../assets/MontserratBoldBase64';
 
+// Register the Montserrat font with different styles
 Font.register({
   family: 'Montserrat',
   fonts: [
-    { src: MontserratRegular, fontWeight: 'normal' },
-    { src: MontserratBold, fontWeight: 'bold' },
+    {
+      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459W1hyzbi.woff2', // Montserrat Regular
+    },
+    {
+      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_cJD6xuX.woff2', // Montserrat Bold
+      fontWeight: 'bold',
+    },
+    {
+      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_ZpC3gnD-w.woff2', // Montserrat Italic
+      fontStyle: 'italic',
+    },
+    {
+      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_bZF3AMT_w.woff2', // Montserrat Bold Italic
+      fontStyle: 'italic',
+      fontWeight: 'bold',
+    },
   ],
 });
 
 const createStyles = (font) => StyleSheet.create({
   page: {
     padding: 30,
-    fontFamily: font,
+    fontFamily: font === 'Montserrat' ? 'Montserrat' : font,
     fontSize: 10,
   },
   header: {
