@@ -21,10 +21,10 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   logo1: {
-    width: 187.5,  // Increased by 25% from 150
+    width: 206.25,  // Increased by 10% from 187.5
     height: 'auto',
     marginBottom: 20,
-    marginLeft: '20%',  // Move 20% to the right (30% - 10%)
+    marginLeft: '20%',  // Kept at 20% as per the previous adjustment
   },
   logo2: {
     width: 400,
