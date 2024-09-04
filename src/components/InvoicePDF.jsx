@@ -6,31 +6,19 @@ import {
   View,
   StyleSheet,
   Image,
-  Font
 } from '@react-pdf/renderer';
-import MontserratRegular from '../assets/MontserratRegularBase64';
-import MontserratBold from '../assets/MontserratBoldBase64';
-
-Font.register({
-  family: 'Montserrat',
-  fonts: [
-    { src: MontserratRegular, fontWeight: 'normal' },
-    { src: MontserratBold, fontWeight: 'bold' },
-  ],
-});
 
 // Create styles
 const styles = StyleSheet.create({
   page: {
     padding: 30,
-    fontFamily: 'Montserrat',
     fontSize: 10,
   },
   header: {
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: 30,
-    marginTop: 30, // Increased top margin
+    marginTop: 30,
   },
   logo1: {
     width: 150,
@@ -52,7 +40,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   boldText: {
-    fontFamily: 'Montserrat',
     fontWeight: 'bold',
   },
   tableHeader: {
@@ -90,8 +77,8 @@ const styles = StyleSheet.create({
 });
 
 const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, logoUrl2, paymentLink }) => {
-  console.log('Logo URL 1:', logoUrl); // Logging for debugging
-  console.log('Logo URL 2:', logoUrl2); // Logging for debugging
+  console.log('Logo URL 1:', logoUrl);
+  console.log('Logo URL 2:', logoUrl2);
 
   return (
     <Document>
