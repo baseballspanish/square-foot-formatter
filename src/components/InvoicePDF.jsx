@@ -11,7 +11,6 @@ import {
 import MontserratRegular from '../assets/MontserratRegularBase64';
 import MontserratBold from '../assets/MontserratBoldBase64';
 
-// Register the fonts
 Font.register({
   family: 'Montserrat',
   fonts: [
@@ -20,11 +19,10 @@ Font.register({
   ],
 });
 
-// Create styles
-const styles = StyleSheet.create({
+const createStyles = (font) => StyleSheet.create({
   page: {
     padding: 30,
-    fontFamily: 'Montserrat',
+    fontFamily: font,
     fontSize: 10,
   },
   header: {
@@ -89,9 +87,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, logoUrl2, paymentLink }) => {
-  console.log('Logo URL 1:', logoUrl);
-  console.log('Logo URL 2:', logoUrl2);
+const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, logoUrl2, paymentLink, font }) => {
+  const styles = createStyles(font);
 
   return (
     <Document>
