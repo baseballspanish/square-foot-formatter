@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Input } from "@/components/ui/input";
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BlobProvider } from '@react-pdf/renderer';
 import InvoicePDF from '../components/InvoicePDF';
 import PricingCalculatorPDF from '../components/PricingCalculatorPDF';
@@ -13,7 +11,6 @@ import { InvoiceGenerator } from '../components/InvoiceGenerator';
 const Index = () => {
   const [error, setError] = useState('');
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-  const [selectedFont, setSelectedFont] = useState('Helvetica');
 
   const handleDownloadPDF = async (blob, filename) => {
     setIsGeneratingPDF(true);
@@ -39,25 +36,6 @@ const Index = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <Card className="mb-6">
-        <CardHeader>
-          <CardTitle>PDF Font Selection</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Select onValueChange={setSelectedFont} defaultValue={selectedFont}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a font" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Helvetica">Helvetica</SelectItem>
-              <SelectItem value="Times-Roman">Times-Roman</SelectItem>
-              <SelectItem value="Courier">Courier</SelectItem>
-              <SelectItem value="Montserrat">Montserrat</SelectItem>
-            </SelectContent>
-          </Select>
-        </CardContent>
-      </Card>
-
       <PricingCalculator
         onGeneratePDF={(pdfProps) => (
           <BlobProvider document={<PricingCalculatorPDF {...pdfProps} />}>
@@ -82,7 +60,7 @@ const Index = () => {
 
       <InvoiceGenerator
         onGeneratePDF={(pdfProps) => (
-          <BlobProvider document={<InvoicePDF {...pdfProps} font={selectedFont} />}>
+          <BlobProvider document={<InvoicePDF {...pdfProps} />}>
             {({ blob, loading, error: pdfError }) => (
               <Button
                 className="w-full"

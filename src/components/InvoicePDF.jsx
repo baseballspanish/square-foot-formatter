@@ -32,10 +32,10 @@ Font.register({
   ],
 });
 
-const createStyles = (font) => StyleSheet.create({
+const styles = StyleSheet.create({
   page: {
     padding: 30,
-    fontFamily: font === 'Montserrat' ? 'Montserrat' : font,
+    fontFamily: 'Montserrat',
     fontSize: 10,
   },
   header: {
@@ -71,6 +71,7 @@ const createStyles = (font) => StyleSheet.create({
     marginTop: 30,
     borderBottom: 1,
     borderColor: '#000',
+    fontWeight: 'bold',
   },
   tableRow: {
     display: 'flex',
@@ -100,9 +101,7 @@ const createStyles = (font) => StyleSheet.create({
   },
 });
 
-const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, logoUrl2, paymentLink, font }) => {
-  const styles = createStyles(font);
-
+const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, logoUrl2, paymentLink }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
