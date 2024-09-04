@@ -27,7 +27,6 @@ const Index = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Calculate total cost and payments whenever squareFeet or pricePerSqFt changes
     const calculatedTotalCost = Number(squareFeet) * Number(pricePerSqFt);
     setTotalCost(calculatedTotalCost);
 
@@ -36,6 +35,17 @@ const Index = () => {
     );
     setPayments(calculatedPayments);
   }, [squareFeet, pricePerSqFt, percentages]);
+
+  const handleImageUpload = (event, setImageUrl) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleDownloadPDF = async (blob, filename) => {
     setIsGeneratingPDF(true);
@@ -85,10 +95,9 @@ const Index = () => {
             className="mb-2"
           />
           <Input
-            type="text"
-            placeholder="Calculator Logo URL"
-            value={calculatorLogoUrl}
-            onChange={(e) => setCalculatorLogoUrl(e.target.value)}
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleImageUpload(e, setCalculatorLogoUrl)}
             className="mb-2"
           />
           <BlobProvider
@@ -159,17 +168,15 @@ const Index = () => {
             className="mb-2"
           />
           <Input
-            type="text"
-            placeholder="Invoice Logo URL 1"
-            value={invoiceLogoUrl1}
-            onChange={(e) => setInvoiceLogoUrl1(e.target.value)}
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleImageUpload(e, setInvoiceLogoUrl1)}
             className="mb-2"
           />
           <Input
-            type="text"
-            placeholder="Invoice Logo URL 2"
-            value={invoiceLogoUrl2}
-            onChange={(e) => setInvoiceLogoUrl2(e.target.value)}
+            type="file"
+            accept="image/*"
+            onChange={(e) => handleImageUpload(e, setInvoiceLogoUrl2)}
             className="mb-2"
           />
           <Input
