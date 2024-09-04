@@ -6,12 +6,25 @@ import {
   View,
   StyleSheet,
   Image,
+  Font,
 } from '@react-pdf/renderer';
+import MontserratRegular from '../assets/MontserratRegularBase64';
+import MontserratBold from '../assets/MontserratBoldBase64';
+
+// Register the fonts
+Font.register({
+  family: 'Montserrat',
+  fonts: [
+    { src: MontserratRegular, fontWeight: 'normal' },
+    { src: MontserratBold, fontWeight: 'bold' },
+  ],
+});
 
 // Create styles
 const styles = StyleSheet.create({
   page: {
     padding: 30,
+    fontFamily: 'Montserrat',
     fontSize: 10,
   },
   header: {
@@ -21,10 +34,10 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   logo1: {
-    width: 225,  // Increased by approximately 20% from 187.5
+    width: 225,
     height: 'auto',
     marginBottom: 20,
-    marginLeft: '10%',  // Moved 10% to the left
+    marginLeft: '10%',
   },
   logo2: {
     width: 400,
