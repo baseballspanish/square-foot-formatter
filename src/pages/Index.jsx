@@ -8,7 +8,34 @@ import InvoicePDF from '../components/InvoicePDF';
 import PricingCalculatorPDF from '../components/PricingCalculatorPDF';
 
 const Index = () => {
-  // ... (previous state declarations remain unchanged)
+  const [squareFeet, setSquareFeet] = useState('');
+  const [pricePerSqFt, setPricePerSqFt] = useState('');
+  const [totalCost, setTotalCost] = useState(0);
+  const [payments, setPayments] = useState([]);
+  const [percentages, setPercentages] = useState([25, 25, 25, 25]);
+  const [calculatorLogoUrl, setCalculatorLogoUrl] = useState('');
+  const [clientName, setClientName] = useState('');
+  const [companyName, setCompanyName] = useState('MERAV INTERIORS');
+  const [email, setEmail] = useState('katie@meravinteriors.com');
+  const [services, setServices] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [invoiceLogoUrl1, setInvoiceLogoUrl1] = useState('');
+  const [invoiceLogoUrl2, setInvoiceLogoUrl2] = useState('');
+  const [invoiceTitle, setInvoiceTitle] = useState('');
+  const [paymentLink, setPaymentLink] = useState('');
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    // Calculate total cost and payments whenever squareFeet or pricePerSqFt changes
+    const calculatedTotalCost = Number(squareFeet) * Number(pricePerSqFt);
+    setTotalCost(calculatedTotalCost);
+
+    const calculatedPayments = percentages.map(percentage => 
+      (calculatedTotalCost * percentage) / 100
+    );
+    setPayments(calculatedPayments);
+  }, [squareFeet, pricePerSqFt, percentages]);
 
   const handleDownloadPDF = async (blob, filename) => {
     setIsGeneratingPDF(true);
@@ -35,8 +62,6 @@ const Index = () => {
     }
   };
 
-  // ... (other functions remain unchanged)
-
   return (
     <div className="container mx-auto p-4">
       {/* Pricing Calculator Card */}
@@ -45,7 +70,27 @@ const Index = () => {
           <CardTitle>Pricing Calculator</CardTitle>
         </CardHeader>
         <CardContent>
-          {/* ... (previous input fields remain unchanged) */}
+          <Input
+            type="number"
+            placeholder="Square Feet"
+            value={squareFeet}
+            onChange={(e) => setSquareFeet(e.target.value)}
+            className="mb-2"
+          />
+          <Input
+            type="number"
+            placeholder="Price per Square Foot"
+            value={pricePerSqFt}
+            onChange={(e) => setPricePerSqFt(e.target.value)}
+            className="mb-2"
+          />
+          <Input
+            type="text"
+            placeholder="Calculator Logo URL"
+            value={calculatorLogoUrl}
+            onChange={(e) => setCalculatorLogoUrl(e.target.value)}
+            className="mb-2"
+          />
           <BlobProvider
             document={
               <PricingCalculatorPDF
@@ -92,7 +137,55 @@ const Index = () => {
           <CardTitle>Invoice Generator</CardTitle>
         </CardHeader>
         <CardContent>
-          {/* ... (previous input fields remain unchanged) */}
+          <Input
+            type="text"
+            placeholder="Client Name"
+            value={clientName}
+            onChange={(e) => setClientName(e.target.value)}
+            className="mb-2"
+          />
+          <Input
+            type="text"
+            placeholder="Company Name"
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+            className="mb-2"
+          />
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mb-2"
+          />
+          <Input
+            type="text"
+            placeholder="Invoice Logo URL 1"
+            value={invoiceLogoUrl1}
+            onChange={(e) => setInvoiceLogoUrl1(e.target.value)}
+            className="mb-2"
+          />
+          <Input
+            type="text"
+            placeholder="Invoice Logo URL 2"
+            value={invoiceLogoUrl2}
+            onChange={(e) => setInvoiceLogoUrl2(e.target.value)}
+            className="mb-2"
+          />
+          <Input
+            type="text"
+            placeholder="Invoice Title"
+            value={invoiceTitle}
+            onChange={(e) => setInvoiceTitle(e.target.value)}
+            className="mb-2"
+          />
+          <Input
+            type="text"
+            placeholder="Payment Link"
+            value={paymentLink}
+            onChange={(e) => setPaymentLink(e.target.value)}
+            className="mb-2"
+          />
           <BlobProvider
             document={
               <InvoicePDF
