@@ -9,15 +9,15 @@ import {
   Font,
 } from '@react-pdf/renderer';
 
-// Register the Montserrat font with different styles
+// Register the Montserrat font with different styles from Google Fonts
 Font.register({
   family: 'Montserrat',
   fonts: [
     {
-      src: '/src/assets/Montserrat-Regular.ttf',
+      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459W1hyzbi.woff2',
     },
     {
-      src: '/src/assets/Montserrat-Bold.ttf',
+      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_cJD6xuX.woff2',
       fontWeight: 'bold',
     },
   ],
