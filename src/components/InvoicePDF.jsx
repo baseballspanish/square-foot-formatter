@@ -8,18 +8,16 @@ import {
   Image,
   Font,
 } from '@react-pdf/renderer';
-import MontserratRegularBase64 from '../assets/MontserratRegularBase64';
-import MontserratBoldBase64 from '../assets/MontserratBoldBase64';
 
 // Register the Montserrat font with different styles
 Font.register({
   family: 'Montserrat',
   fonts: [
     {
-      src: `data:font/truetype;base64,${MontserratRegularBase64}`,
+      src: '/src/assets/Montserrat-Regular.ttf',
     },
     {
-      src: `data:font/truetype;base64,${MontserratBoldBase64}`,
+      src: '/src/assets/Montserrat-Bold.ttf',
       fontWeight: 'bold',
     },
   ],
