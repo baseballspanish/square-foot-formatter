@@ -10,22 +10,18 @@ import {
   Link,
 } from '@react-pdf/renderer';
 
-
-
-// Register Montserrat using the local .ttf files from the public folder
 Font.register({
   family: 'Montserrat',
   fonts: [
     {
-      src: '/Montserrat-Regular.ttf', // Path to the regular font file in the public folder
+      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459W1hyzbi.woff2',
     },
     {
-      src: '/Montserrat-Bold.ttf', // Path to the bold font file in the public folder
+      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_cJD6xuX.woff2',
       fontWeight: 'bold',
     },
   ],
 });
-
 
 const styles = StyleSheet.create({
   page: {
@@ -90,16 +86,16 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   paymentLabel: {
-    color: 'black', // The label text will be black
-    textDecoration: 'none', // No underline for the label
+    color: 'black',
+    textDecoration: 'none',
   },
   paymentLink: {
-    color: 'blue', // Optional: clickable link in blue
-    textDecoration: 'underline', // Optional: underline for the clickable link
+    color: 'blue',
+    textDecoration: 'underline',
   },
 });
 
-const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, logoUrl2, paymentLink }) => {
+const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, logoUrl2, paymentLink, invoiceTitle }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -117,6 +113,7 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, 
         </View>
 
         <View style={styles.section}>
+          <Text style={styles.boldText}>{invoiceTitle || 'INVOICE'}</Text>
           <Text>
             <Text style={styles.boldText}>BILLED TO: </Text>
             {clientName || 'CLIENT NAME'}
@@ -143,7 +140,7 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, 
               <Text style={styles.cell}>{service.location || 'N/A'}</Text>
               <Text style={styles.cellLarge}>{service.description}</Text>
               <Text style={styles.cell}>{service.category}</Text>
-              <Text style={[styles.cell, styles.cellRight]}>${service.subtotal.toFixed(2)}</Text>
+              <Text style={[styles.cell, styles.cellRight]}>${Number(service.subtotal).toFixed(2)}</Text>
             </View>
           ))}
         </View>
@@ -153,14 +150,11 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, 
         </View>
 
         {paymentLink && (
-  <Text>
-    <Text style={styles.paymentLabel}>Payment Link: </Text>
-    <Link src={paymentLink} style={styles.paymentLink}>{paymentLink}</Link>
-  </Text>
-)}
-
-
-
+          <Text>
+            <Text style={styles.paymentLabel}>Payment Link: </Text>
+            <Link src={paymentLink} style={styles.paymentLink}>{paymentLink}</Link>
+          </Text>
+        )}
       </Page>
     </Document>
   );
