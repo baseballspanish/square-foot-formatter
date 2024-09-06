@@ -7,21 +7,25 @@ import {
   StyleSheet,
   Image,
   Font,
+  Link,
 } from '@react-pdf/renderer';
 
-// Register the Montserrat font with different styles from Google Fonts
+
+
+// Register Montserrat using the local .ttf files from the public folder
 Font.register({
   family: 'Montserrat',
   fonts: [
     {
-      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459W1hyzbi.woff2',
+      src: '/Montserrat-Regular.ttf', // Path to the regular font file in the public folder
     },
     {
-      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_cJD6xuX.woff2',
+      src: '/Montserrat-Bold.ttf', // Path to the bold font file in the public folder
       fontWeight: 'bold',
     },
   ],
 });
+
 
 const styles = StyleSheet.create({
   page: {
@@ -85,10 +89,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: 'right',
   },
+  paymentLabel: {
+    color: 'black', // The label text will be black
+    textDecoration: 'none', // No underline for the label
+  },
   paymentLink: {
-    color: 'blue',
-    textDecoration: 'underline',
-    marginTop: 10,
+    color: 'blue', // Optional: clickable link in blue
+    textDecoration: 'underline', // Optional: underline for the clickable link
   },
 });
 
@@ -146,10 +153,14 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, 
         </View>
 
         {paymentLink && (
-          <Text style={styles.paymentLink}>
-            Payment Link: {paymentLink}
-          </Text>
-        )}
+  <Text>
+    <Text style={styles.paymentLabel}>Payment Link: </Text>
+    <Link src={paymentLink} style={styles.paymentLink}>{paymentLink}</Link>
+  </Text>
+)}
+
+
+
       </Page>
     </Document>
   );
