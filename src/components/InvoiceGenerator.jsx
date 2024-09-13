@@ -40,7 +40,7 @@ export const InvoiceGenerator = ({ onGeneratePDF }) => {
   };
 
   const handleGeneratePDF = () => {
-    console.log("Generate PDF button clicked");
+    console.log("Generate PDF button clicked in InvoiceGenerator");
     const invoiceData = {
       clientName,
       companyName,
@@ -55,10 +55,10 @@ export const InvoiceGenerator = ({ onGeneratePDF }) => {
     console.log("Invoice data:", invoiceData);
     
     if (typeof onGeneratePDF === 'function') {
-      console.log("Calling onGeneratePDF function");
+      console.log("Calling onGeneratePDF function from InvoiceGenerator");
       onGeneratePDF(invoiceData);
     } else {
-      console.error("onGeneratePDF is not a function");
+      console.error("onGeneratePDF is not a function in InvoiceGenerator");
     }
   };
 
