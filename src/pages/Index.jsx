@@ -62,7 +62,7 @@ const Index = () => {
 
       <InvoiceGenerator
         onGeneratePDF={(pdfProps) => {
-          console.log("onGeneratePDF called with props:", pdfProps);
+          console.log("onGeneratePDF called in Index component with props:", pdfProps);
           return (
             <BlobProvider document={<InvoicePDF {...pdfProps} />}>
               {({ blob, loading, error: pdfError }) => {
@@ -71,6 +71,7 @@ const Index = () => {
                   <Button
                     className="w-full"
                     onClick={() => {
+                      console.log("Invoice PDF download button clicked");
                       if (pdfError) {
                         setError(`Failed to generate Invoice PDF: ${pdfError.message}`);
                       } else {
