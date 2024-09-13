@@ -40,7 +40,7 @@ export const InvoiceGenerator = ({ onGeneratePDF }) => {
   };
 
   const handleGeneratePDF = () => {
-    onGeneratePDF({
+    console.log("Generating PDF with data:", {
       clientName,
       companyName,
       email,
@@ -51,6 +51,22 @@ export const InvoiceGenerator = ({ onGeneratePDF }) => {
       invoiceTitle,
       paymentLink
     });
+    
+    if (typeof onGeneratePDF === 'function') {
+      onGeneratePDF({
+        clientName,
+        companyName,
+        email,
+        services,
+        total,
+        logoUrl: invoiceLogoUrl1,
+        logoUrl2: invoiceLogoUrl2,
+        invoiceTitle,
+        paymentLink
+      });
+    } else {
+      console.error("onGeneratePDF is not a function");
+    }
   };
 
   return (

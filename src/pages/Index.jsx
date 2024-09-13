@@ -11,6 +11,7 @@ import { InvoiceGenerator } from '../components/InvoiceGenerator';
 const Index = () => {
   const [error, setError] = useState('');
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+  const [lastGeneratedPDF, setLastGeneratedPDF] = useState(null);
 
   const handleDownloadPDF = async (blob, filename) => {
     setIsGeneratingPDF(true);
@@ -26,6 +27,7 @@ const Index = () => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      setLastGeneratedPDF({ blob, filename });
     } catch (error) {
       console.error('Error generating PDF:', error);
       setError(`Failed to generate PDF: ${error.message}`);
@@ -59,31 +61,54 @@ const Index = () => {
       />
 
       <InvoiceGenerator
-        onGeneratePDF={(pdfProps) => (
-          <BlobProvider document={<InvoicePDF {...pdfProps} />}>
-            {({ blob, loading, error: pdfError }) => (
-              <Button
-                className="w-full"
-                onClick={() => {
-                  if (pdfError) {
-                    setError(`Failed to generate Invoice PDF: ${pdfError.message}`);
-                  } else {
-                    handleDownloadPDF(blob, 'invoice.pdf');
-                  }
-                }}
-                disabled={loading || isGeneratingPDF}
-              >
-                {loading || isGeneratingPDF ? 'Generating PDF...' : 'Download Invoice PDF'}
-              </Button>
-            )}
-          </BlobProvider>
-        )}
+        onGeneratePDF={(pdfProps) => {
+          console.log("onGeneratePDF called with props:", pdfProps);
+          return (
+            <BlobProvider document={<InvoicePDF {...pdfProps} />}>
+              {({ blob, loading, error: pdfError }) => {
+                console.log("BlobProvider result:", { blob, loading, error: pdfError });
+                return (
+                  <Button
+                    className="w-full"
+                    onClick={() => {
+                      if (pdfError) {
+                        setError(`Failed to generate Invoice PDF: ${pdfError.message}`);
+                      } else {
+                        handleDownloadPDF(blob, 'invoice.pdf');
+                      }
+                    }}
+                    disabled={loading || isGeneratingPDF}
+                  >
+                    {loading || isGeneratingPDF ? 'Generating PDF...' : 'Download Invoice PDF'}
+                  </Button>
+                );
+              }}
+            </BlobProvider>
+          );
+        }}
       />
 
       {error && (
         <Alert variant="destructive" className="mt-4">
           <AlertDescription>{error}</AlertDescription>
         </Alert>
+      )}
+
+      {lastGeneratedPDF && (
+        <Card className="mt-4">
+          <CardHeader>
+            <CardTitle>Last Generated PDF</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>Filename: {lastGeneratedPDF.filename}</p>
+            <Button
+              onClick={() => handleDownloadPDF(lastGeneratedPDF.blob, lastGeneratedPDF.filename)}
+              className="mt-2"
+            >
+              Download Again
+            </Button>
+          </CardContent>
+        </Card>
       )}
     </div>
   );
