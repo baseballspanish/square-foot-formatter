@@ -42,26 +42,25 @@ const Index = () => {
       <BlobProvider document={<InvoicePDF {...pdfProps} />}>
         {({ blob, loading, error: pdfError }) => {
           console.log("BlobProvider result:", { blob, loading, error: pdfError });
-          return (
-            <Button
-              className="w-full"
-              onClick={() => {
-                console.log("Invoice PDF download button clicked");
-                if (pdfError) {
-                  setError(`Failed to generate Invoice PDF: ${pdfError.message}`);
-                } else {
-                  handleDownloadPDF(blob, 'invoice.pdf');
-                }
-              }}
-              disabled={loading || isGeneratingPDF}
-            >
-              {loading || isGeneratingPDF ? 'Generating PDF...' : 'Download Invoice PDF'}
-            </Button>
-          );
+          if (pdfError) {
+            console.error("PDF generation error:", pdfError);
+            setError(`Failed to generate Invoice PDF: ${pdfError.message}`);
+            return null;
+          }
+          if (loading) {
+            console.log("PDF is still loading");
+            return <Button disabled>Generating PDF...</Button>;
+          }
+          if (blob) {
+            console.log("PDF blob generated successfully");
+            handleDownloadPDF(blob, 'invoice.pdf');
+            return <Button disabled>PDF Downloaded</Button>;
+          }
+          return null;
         }}
       </BlobProvider>
     );
-  }, [handleDownloadPDF, isGeneratingPDF]);
+  }, [handleDownloadPDF]);
 
   return (
     <div className="container mx-auto p-4">

@@ -56,7 +56,12 @@ export const InvoiceGenerator = ({ onGeneratePDF }) => {
     
     if (typeof onGeneratePDF === 'function') {
       console.log("Calling onGeneratePDF function from InvoiceGenerator");
-      onGeneratePDF(invoiceData);
+      try {
+        const result = onGeneratePDF(invoiceData);
+        console.log("Result from onGeneratePDF:", result);
+      } catch (error) {
+        console.error("Error in onGeneratePDF:", error);
+      }
     } else {
       console.error("onGeneratePDF is not a function in InvoiceGenerator");
     }
