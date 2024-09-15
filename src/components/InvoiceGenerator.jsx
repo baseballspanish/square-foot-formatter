@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ServiceInput from './ServiceInput';
-import { BlobProvider } from '@react-pdf/renderer';
-import InvoicePDF from './InvoicePDF';
 
 export const InvoiceGenerator = () => {
   const [clientName, setClientName] = useState('');
@@ -39,18 +37,6 @@ export const InvoiceGenerator = () => {
 
     const newTotal = updatedServices.reduce((sum, service) => sum + Number(service.subtotal), 0);
     setTotal(newTotal);
-  };
-
-  const invoiceData = {
-    clientName,
-    companyName,
-    email,
-    services,
-    total,
-    logoUrl: invoiceLogoUrl1,
-    logoUrl2: invoiceLogoUrl2,
-    invoiceTitle,
-    paymentLink
   };
 
   return (
@@ -121,29 +107,6 @@ export const InvoiceGenerator = () => {
           <strong>Total: ${total.toFixed(2)}</strong>
         </div>
       </CardContent>
-      <CardFooter>
-        <BlobProvider document={<InvoicePDF {...invoiceData} />}>
-          {({ blob, url, loading, error }) => (
-            <Button
-              onClick={() => {
-                if (error) {
-                  console.error('Error generating Invoice PDF:', error);
-                } else if (url) {
-                  const link = document.createElement('a');
-                  link.href = url;
-                  link.download = 'invoice.pdf';
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                }
-              }}
-              disabled={loading}
-            >
-              {loading ? 'Generating PDF...' : 'Generate and Download PDF'}
-            </Button>
-          )}
-        </BlobProvider>
-      </CardFooter>
     </Card>
   );
 };
