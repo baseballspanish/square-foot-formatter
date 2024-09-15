@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ServiceInput from './ServiceInput';
 
-export const InvoiceGenerator = () => {
+export const InvoiceGenerator = ({ onDownloadInvoice }) => {
   const [clientName, setClientName] = useState('');
   const [companyName, setCompanyName] = useState('MERAV INTERIORS');
   const [email, setEmail] = useState('katie@meravinteriors.com');
@@ -37,6 +37,20 @@ export const InvoiceGenerator = () => {
 
     const newTotal = updatedServices.reduce((sum, service) => sum + Number(service.subtotal), 0);
     setTotal(newTotal);
+  };
+
+  const handleDownloadInvoice = () => {
+    onDownloadInvoice({
+      clientName,
+      companyName,
+      email,
+      services,
+      total,
+      logoUrl: invoiceLogoUrl1,
+      logoUrl2: invoiceLogoUrl2,
+      paymentLink,
+      invoiceTitle
+    });
   };
 
   return (
@@ -106,6 +120,10 @@ export const InvoiceGenerator = () => {
         <div className="mb-4">
           <strong>Total: ${total.toFixed(2)}</strong>
         </div>
+
+        <Button onClick={handleDownloadInvoice} className="w-full">
+          Download Invoice
+        </Button>
       </CardContent>
     </Card>
   );

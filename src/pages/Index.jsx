@@ -6,6 +6,7 @@ import { BlobProvider } from '@react-pdf/renderer';
 import PricingCalculatorPDF from '../components/PricingCalculatorPDF';
 import { PricingCalculator } from '../components/PricingCalculator';
 import { InvoiceGenerator } from '../components/InvoiceGenerator';
+import InvoicePDF from '../components/InvoicePDF';
 
 const Index = () => {
   const [error, setError] = useState('');
@@ -37,6 +38,21 @@ const Index = () => {
     }
   }, []);
 
+  const handleDownloadInvoice = (invoiceData) => {
+    return (
+      <BlobProvider document={<InvoicePDF {...invoiceData} />}>
+        {({ blob, loading, error: pdfError }) => {
+          if (pdfError) {
+            setError(`Failed to generate Invoice PDF: ${pdfError.message}`);
+          } else if (!loading) {
+            handleDownloadPDF(blob, 'invoice.pdf');
+          }
+          return null;
+        }}
+      </BlobProvider>
+    );
+  };
+
   return (
     <div className="container mx-auto p-4">
       <PricingCalculator
@@ -61,7 +77,7 @@ const Index = () => {
         )}
       />
 
-      <InvoiceGenerator />
+      <InvoiceGenerator onDownloadInvoice={handleDownloadInvoice} />
 
       {error && (
         <Alert variant="destructive" className="mt-4">
