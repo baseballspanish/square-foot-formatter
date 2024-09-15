@@ -37,12 +37,15 @@ const Index = () => {
   }, []);
 
   const handleDownloadInvoice = (invoiceData) => {
+    console.log('Handling invoice download with data:', invoiceData);
     return (
       <BlobProvider document={<InvoicePDF {...invoiceData} />}>
         {({ blob, loading, error: pdfError }) => {
           if (pdfError) {
+            console.error('PDF generation error:', pdfError);
             setError(`Failed to generate Invoice PDF: ${pdfError.message}`);
-          } else if (!loading) {
+          } else if (!loading && blob) {
+            console.log('PDF blob generated, initiating download');
             handleDownloadPDF(blob, 'invoice.pdf');
           }
           return null;
