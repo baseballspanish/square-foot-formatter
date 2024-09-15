@@ -38,32 +38,6 @@ const Index = () => {
     }
   }, []);
 
-  const handleGenerateInvoicePDF = useCallback((invoiceData) => {
-    console.log("handleGenerateInvoicePDF called with data:", invoiceData);
-    return (
-      <BlobProvider document={<InvoicePDF {...invoiceData} />}>
-        {({ blob, loading, error: pdfError }) => {
-          console.log("BlobProvider result:", { blob, loading, error: pdfError });
-          if (pdfError) {
-            console.error("PDF generation error:", pdfError);
-            setError(`Failed to generate Invoice PDF: ${pdfError.message}`);
-            return null;
-          }
-          if (loading) {
-            console.log("PDF is still loading");
-            return <Button disabled>Generating PDF...</Button>;
-          }
-          if (blob) {
-            console.log("PDF blob generated successfully");
-            handleDownloadPDF(blob, 'invoice.pdf');
-            return <Button disabled>PDF Downloaded</Button>;
-          }
-          return null;
-        }}
-      </BlobProvider>
-    );
-  }, [handleDownloadPDF]);
-
   return (
     <div className="container mx-auto p-4">
       <PricingCalculator
@@ -88,7 +62,7 @@ const Index = () => {
         )}
       />
 
-      <InvoiceGenerator onGeneratePDF={handleGenerateInvoicePDF} />
+      <InvoiceGenerator onGeneratePDF={handleDownloadPDF} />
 
       {error && (
         <Alert variant="destructive" className="mt-4">

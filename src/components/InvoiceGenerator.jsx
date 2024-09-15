@@ -3,6 +3,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import ServiceInput from './ServiceInput';
+import { BlobProvider } from '@react-pdf/renderer';
+import InvoicePDF from './InvoicePDF';
 
 export const InvoiceGenerator = ({ onGeneratePDF }) => {
   const [clientName, setClientName] = useState('');
@@ -39,32 +41,16 @@ export const InvoiceGenerator = ({ onGeneratePDF }) => {
     setTotal(newTotal);
   };
 
-  const handleGeneratePDF = () => {
-    console.log("Generate PDF button clicked in InvoiceGenerator");
-    const invoiceData = {
-      clientName,
-      companyName,
-      email,
-      services,
-      total,
-      logoUrl: invoiceLogoUrl1,
-      logoUrl2: invoiceLogoUrl2,
-      invoiceTitle,
-      paymentLink
-    };
-    console.log("Invoice data:", invoiceData);
-    
-    if (typeof onGeneratePDF === 'function') {
-      console.log("Calling onGeneratePDF function from InvoiceGenerator");
-      try {
-        const result = onGeneratePDF(invoiceData);
-        console.log("Result from onGeneratePDF:", result);
-      } catch (error) {
-        console.error("Error in onGeneratePDF:", error);
-      }
-    } else {
-      console.error("onGeneratePDF is not a function in InvoiceGenerator");
-    }
+  const invoiceData = {
+    clientName,
+    companyName,
+    email,
+    services,
+    total,
+    logoUrl: invoiceLogoUrl1,
+    logoUrl2: invoiceLogoUrl2,
+    invoiceTitle,
+    paymentLink
   };
 
   return (
@@ -136,7 +122,22 @@ export const InvoiceGenerator = ({ onGeneratePDF }) => {
         </div>
       </CardContent>
       <CardFooter>
-        <Button onClick={handleGeneratePDF}>Generate PDF</Button>
+        <BlobProvider document={<InvoicePDF {...invoiceData} />}>
+          {({ blob, loading, error }) => (
+            <Button
+              onClick={() => {
+                if (error) {
+                  console.error('Error generating Invoice PDF:', error);
+                } else if (blob) {
+                  onGeneratePDF(blob, 'invoice.pdf');
+                }
+              }}
+              disabled={loading}
+            >
+              {loading ? 'Generating PDF...' : 'Generate PDF'}
+            </Button>
+          )}
+        </BlobProvider>
       </CardFooter>
     </Card>
   );
