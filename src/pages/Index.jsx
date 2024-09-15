@@ -38,10 +38,10 @@ const Index = () => {
     }
   }, []);
 
-  const handleGenerateInvoicePDF = useCallback((pdfProps) => {
-    console.log("handleGenerateInvoicePDF called with props:", pdfProps);
+  const handleGenerateInvoicePDF = useCallback((invoiceData) => {
+    console.log("handleGenerateInvoicePDF called with data:", invoiceData);
     return (
-      <BlobProvider document={<InvoicePDF {...pdfProps} />}>
+      <BlobProvider document={<InvoicePDF {...invoiceData} />}>
         {({ blob, loading, error: pdfError }) => {
           console.log("BlobProvider result:", { blob, loading, error: pdfError });
           if (pdfError) {
