@@ -14,7 +14,6 @@ const Index = () => {
   const [lastGeneratedPDF, setLastGeneratedPDF] = useState(null);
 
   const handleDownloadPDF = useCallback(async (blob, filename) => {
-    console.log("handleDownloadPDF called with blob:", blob, "and filename:", filename);
     setIsGeneratingPDF(true);
     setError('');
     try {
@@ -29,7 +28,6 @@ const Index = () => {
       link.click();
       document.body.removeChild(link);
       setLastGeneratedPDF({ blob, filename });
-      console.log("PDF download initiated");
     } catch (error) {
       console.error('Error generating PDF:', error);
       setError(`Failed to generate PDF: ${error.message}`);
