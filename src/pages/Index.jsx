@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { BlobProvider } from '@react-pdf/renderer';
-import InvoicePDF from '../components/InvoicePDF';
 import PricingCalculatorPDF from '../components/PricingCalculatorPDF';
 import { PricingCalculator } from '../components/PricingCalculator';
 import { InvoiceGenerator } from '../components/InvoiceGenerator';
@@ -62,7 +61,7 @@ const Index = () => {
         )}
       />
 
-      <InvoiceGenerator onGeneratePDF={handleDownloadPDF} />
+      <InvoiceGenerator />
 
       {error && (
         <Alert variant="destructive" className="mt-4">

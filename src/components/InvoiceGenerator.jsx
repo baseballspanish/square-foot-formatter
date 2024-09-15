@@ -6,7 +6,7 @@ import ServiceInput from './ServiceInput';
 import { BlobProvider } from '@react-pdf/renderer';
 import InvoicePDF from './InvoicePDF';
 
-export const InvoiceGenerator = ({ onGeneratePDF }) => {
+export const InvoiceGenerator = () => {
   const [clientName, setClientName] = useState('');
   const [companyName, setCompanyName] = useState('MERAV INTERIORS');
   const [email, setEmail] = useState('katie@meravinteriors.com');
@@ -123,18 +123,23 @@ export const InvoiceGenerator = ({ onGeneratePDF }) => {
       </CardContent>
       <CardFooter>
         <BlobProvider document={<InvoicePDF {...invoiceData} />}>
-          {({ blob, loading, error }) => (
+          {({ blob, url, loading, error }) => (
             <Button
               onClick={() => {
                 if (error) {
                   console.error('Error generating Invoice PDF:', error);
-                } else if (blob) {
-                  onGeneratePDF(blob, 'invoice.pdf');
+                } else if (url) {
+                  const link = document.createElement('a');
+                  link.href = url;
+                  link.download = 'invoice.pdf';
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
                 }
               }}
               disabled={loading}
             >
-              {loading ? 'Generating PDF...' : 'Generate PDF'}
+              {loading ? 'Generating PDF...' : 'Generate and Download PDF'}
             </Button>
           )}
         </BlobProvider>
