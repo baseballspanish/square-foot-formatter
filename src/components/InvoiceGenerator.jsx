@@ -40,7 +40,7 @@ export const InvoiceGenerator = ({ onDownloadInvoice }) => {
   };
 
   const handleDownloadInvoice = () => {
-    console.log('Downloading invoice with data:', invoiceData);
+    console.log('Handling invoice download with data:', invoiceData);
     onDownloadInvoice(invoiceData);
   };
 

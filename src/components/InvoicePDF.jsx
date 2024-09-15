@@ -95,18 +95,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, logoUrl2, paymentLink, invoiceTitle }) => {
+const InvoicePDF = ({ clientName, companyName, email, services, total, invoiceLogoUrl1, invoiceLogoUrl2, paymentLink, invoiceTitle }) => {
+  console.log('Rendering InvoicePDF with props:', { clientName, companyName, email, services, total, invoiceLogoUrl1, invoiceLogoUrl2, paymentLink, invoiceTitle });
+  
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
-          {logoUrl ? (
-            <Image style={styles.logo1} src={logoUrl} />
+          {invoiceLogoUrl1 ? (
+            <Image style={styles.logo1} src={invoiceLogoUrl1} />
           ) : (
             <Text style={styles.logoFallback}>Logo 1 not available</Text>
           )}
-          {logoUrl2 ? (
-            <Image style={styles.logo2} src={logoUrl2} />
+          {invoiceLogoUrl2 ? (
+            <Image style={styles.logo2} src={invoiceLogoUrl2} />
           ) : (
             <Text style={styles.logoFallback}>Logo 2 not available</Text>
           )}
@@ -146,7 +148,7 @@ const InvoicePDF = ({ clientName, companyName, email, services, total, logoUrl, 
         </View>
 
         <View style={styles.total}>
-          <Text style={styles.boldText}>Total: ${total.toFixed(2)}</Text>
+          <Text style={styles.boldText}>Total: ${Number(total).toFixed(2)}</Text>
         </View>
 
         {paymentLink && (
